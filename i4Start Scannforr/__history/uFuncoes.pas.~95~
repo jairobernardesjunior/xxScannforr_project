@@ -1,0 +1,285 @@
+unit uFuncoes;
+
+interface
+
+uses SysUtils, DBTables, Db, Controls, Forms, Dialogs, PsAPI, TLHelp32,
+     Windows, Messages, Classes, Graphics, StdCtrls, ExtCtrls, printers;
+
+// Funções
+
+function ConverteLatLongMetros(LatLong : String) : integer;
+function CalculaIdxAltitude(seq_empresa, seq_area_geral, seq_medicao : integer) : currency;
+function FaltaDlaDloMaps(seq_empresa, seq_area_geral, seq_medicao : integer) : boolean;
+function MediaDistanciaCalibragem(seq_empresa, seq_area_geral, seq_medicao,
+                                  altura_equipamento : integer) : integer;
+function idxPlantaf(altura_Planta, altura_equipamento, vMediaDistanciaCalibragem
+                    : integer) : currency;
+function idxPlantafOriginal(altura_Planta, altura_equipamento, vMediaDistanciaCalibragem
+                    : integer) : currency;
+function alturaLidaf(altura_equipamento, distancia : integer;
+                     idxPlanta : currency) : integer;
+function dataInicioCiclo(seq_empresa, seq_area_geral, seq_area : integer;
+                         data_evento : string) : string;
+function dataFimCiclo(seq_empresa, seq_area_geral, seq_area : integer;
+                         data_evento : string) : string;
+
+implementation
+
+uses uscannforr, ucontrole;
+
+function ConverteLatLongMetros(LatLong : String) : integer;
+var xsinalLatLong, xvalorLatLong, xTestaNro : integer;
+
+begin
+
+  try
+    xsinalLatLong := strTOint(copy(LatLong, 1, pos('.', LatLong) -1));
+  except
+    showmessage('Parte da latitude-longitude que corresponde ao grau inválida');
+    result := 999999;
+    exit;
+  end;
+
+  try
+    xTestaNro := strTOint(copy(LatLong, pos('.', LatLong) + 1, 2));
+  except
+    showmessage('Parte da latitude-longitude que corresponde aos minutos inválida');
+    result := 999999;
+    exit;
+  end;
+
+  try
+    xTestaNro := strTOint(copy(LatLong, pos('.', LatLong) + 3, 4));
+  except
+    showmessage('Parte da latitude-longitude que corresponde aos segundos inválida');
+    result := 999999;
+    exit;
+  end;
+
+  xvalorLatLong := xsinalLatLong;
+  if xsinalLatLong < 0 then
+    xsinalLatLong := -1
+  else
+    xsinalLatLong := 1;
+
+  xvalorLatLong := xvalorLatLong * xsinalLatLong;
+  xvalorLatLong := xvalorLatLong * 60 * 1852;
+  xvalorLatLong := xvalorLatLong +
+               (strTOint(copy(LatLong, pos('.', LatLong) + 1, 2)) * 1852);
+  xvalorLatLong := xvalorLatLong +
+  trunc(((strTOcurr(copy(LatLong, pos('.', LatLong) + 3, 4))/100)/60) * 1852);
+
+  result := xvalorLatLong * xsinalLatLong;
+
+end;
+
+function FaltaDlaDloMaps(seq_empresa, seq_area_geral, seq_medicao : integer) : boolean;
+begin
+
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+  ' select dla' +
+  ' from medicoes_escaneamentos_tb' +
+  ' where seq_empresa    = :seq_empresa' +
+  '   and seq_area_geral = :seq_area_geral' +
+  '   and seq_medicao    = :seq_medicao' +
+  '   and seq_medicoes not in' +
+  '               (select m.seq_medicoes' +
+  '                from medicoes_escaneamentos_tb m, lat_long_alt_tb l' +
+  '                where m.dla = l.dla' +
+  '                  and m.dlo = l.dlo' +
+  '                  and m.seq_empresa    = :seq_empresa' +
+  '                  and m.seq_area_geral = :seq_area_geral' +
+  '                  and m.seq_medicao    = :seq_medicao)';
+
+  frmscannforr.qryGeral.Params[0].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[1].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[2].AsInteger := seq_medicao;
+
+  frmscannforr.qryGeral.Params[3].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[4].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[5].AsInteger := seq_medicao;
+
+  frmscannforr.qryGeral.ExecSQL;
+
+  if frmscannforr.qryGeral.RecordCount = 0 then
+    result := false
+  else
+    begin
+      showmessage('Existem ' + frmscannforr.qryGeral.RecordCount.ToString +
+                  ' locais que não têm as coordenadas do Google Maps, importe' +
+                  ' primeiro');
+      result := true;
+    end;
+
+end;
+
+function CalculaIdxAltitude(seq_empresa, seq_area_geral, seq_medicao : integer) : currency;
+begin
+
+  if FaltaDlaDloMaps(seq_empresa, seq_area_geral, seq_medicao) then
+    begin
+      result := 999999;
+      exit;
+    end;
+
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+  ' select avg(m.distancia / (m.altitude - l.altitude_solo)) as idxa' +
+  ' from medicoes_escaneamentos_tb m, lat_long_alt_tb l' +
+  ' where m.dla = l.dla' +
+  '   and m.dlo = l.dlo' +
+  '   and m.seq_empresa = :seq_empresa' +
+  '   and m.seq_area_geral = :seq_area_geral' +
+  '   and m.seq_medicao = :seq_medicao' +
+  '   and m.calibragem = true';
+
+  frmscannforr.qryGeral.Params[0].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[1].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[2].AsInteger := seq_medicao;
+
+  try
+    frmscannforr.qryGeral.ExecSQL;
+    result := frmscannforr.qryGeral.FieldByName('idxa').AsCurrency;
+
+  except
+    on E : Exception do
+    begin
+      ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+      result := 999999;
+    end;
+  end;
+
+end;
+
+function MediaDistanciaCalibragem(seq_empresa, seq_area_geral, seq_medicao,
+                                  altura_equipamento : integer) : integer;
+begin
+
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+  ' select avg(m.distancia) as mediaDistancia' +
+  ' from medicoes_escaneamentos_tb m' +
+  ' where m.seq_empresa = :seq_empresa' +
+  '   and m.seq_area_geral = :seq_area_geral' +
+  '   and m.seq_medicao = :seq_medicao' +
+  '   and m.distancia <= :altura_equipamento' +
+  '   and m.calibragem = true';
+
+  frmscannforr.qryGeral.Params[0].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[1].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[2].AsInteger := seq_medicao;
+  frmscannforr.qryGeral.Params[3].AsInteger := altura_equipamento;
+
+  try
+    frmscannforr.qryGeral.ExecSQL;
+    result := trunc(frmscannforr.qryGeral.FieldByName('mediaDistancia').AsInteger
+                    * 0.966 {0.52532198881}  ); //(sqrt(2)/2));
+
+  except
+    on E : Exception do
+    begin
+      ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+      result := 999999;
+    end;
+  end;
+
+end;
+
+function idxPlantaf(altura_Planta, altura_equipamento, vMediaDistanciaCalibragem
+                    : integer) : currency;
+begin
+  result := (altura_Planta / (altura_equipamento - vMediaDistanciaCalibragem ));// + 0.5;
+end;
+
+function idxPlantafOriginal(altura_Planta, altura_equipamento, vMediaDistanciaCalibragem
+                    : integer) : currency;
+begin
+  result := (altura_Planta / (altura_equipamento - vMediaDistanciaCalibragem ));
+end;
+
+function alturaLidaf(altura_equipamento, distancia : integer;
+                     idxPlanta : currency) : integer;
+begin
+  result :=
+    trunc((altura_equipamento - (distancia * 0.966 {0.52532198881} ) {(sqrt(2)/2))} ) * idxPlanta);
+end;
+
+function dataInicioCiclo(seq_empresa, seq_area_geral, seq_area : integer;
+                         data_evento : string) : string;
+begin
+
+  // PROCURA DATA DE INICIO DO CICLO
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+' select data_evento' +
+' from eventos_tb' +
+' where data_evento <= :data_evento' +
+'   and seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+'   and seq_tipo_evento = :seq_tipo_evento' +
+'   and cancelado <> true' +
+' order by data_evento desc' +
+' fetch first 1 rows only';
+
+  frmscannforr.qryGeral.Params[0].AsString := data_evento;
+  frmscannforr.qryGeral.Params[1].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[2].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[3].AsInteger := seq_area;
+  frmscannforr.qryGeral.Params[4].AsInteger :=
+        frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+
+  frmscannforr.qryGeral.Open;
+
+  if frmscannforr.qryGeral.RecordCount = 0 then
+    result := '!@#$% - falta evento de início de ciclo para a data: ' + data_evento
+  else
+    result :=
+      formatDateTime('dd/mm/yyyy', frmscannforr.qryGeral.
+                     FieldByName('data_evento').AsDateTime);
+end;
+
+function dataFimCiclo(seq_empresa, seq_area_geral, seq_area : integer;
+                         data_evento : string) : string;
+begin
+
+  // PROCURA DATA DE INICIO DO CICLO
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+' select data_evento' +
+' from eventos_tb' +
+' where data_evento > :data_evento' +
+'   and seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+'   and seq_tipo_evento = :seq_tipo_evento' +
+'   and cancelado <> true' +
+' order by data_evento asc' +
+' fetch first 1 rows only';
+
+  frmscannforr.qryGeral.Params[0].AsString := data_evento;
+  frmscannforr.qryGeral.Params[1].AsInteger := seq_empresa;
+  frmscannforr.qryGeral.Params[2].AsInteger := seq_area_geral;
+  frmscannforr.qryGeral.Params[3].AsInteger := seq_area;
+  frmscannforr.qryGeral.Params[4].AsInteger :=
+        frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+
+  frmscannforr.qryGeral.Open;
+
+  if frmscannforr.qryGeral.RecordCount = 0 then
+    result := '31/12/3000'
+  else
+    result :=
+      formatDateTime('dd/mm/yyyy', frmscannforr.qryGeral.
+                     FieldByName('data_evento').AsDateTime);
+end;
+
+end.
+
+
+
+
+

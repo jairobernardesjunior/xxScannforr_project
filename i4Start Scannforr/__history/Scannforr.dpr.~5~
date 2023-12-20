@@ -1,0 +1,17 @@
+program Scannforr;
+
+uses
+  Vcl.Forms,
+  uScannforr in 'uScannforr.pas' {frmScannforr},
+  uFuncoes in 'uFuncoes.pas',
+  Unit1 in 'Unit1.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmScannforr, frmScannforr);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

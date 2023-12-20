@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/12/30 10:17:05.000.014,=C:\Users\kr\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/12/30 10:22:20.000.306,C:\Users\kr\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\i4Start Scannforr\uScannforr.pas</Transaction>
+    <Transaction>2019/12/30 10:22:20.000.306,C:\Users\kr\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\i4Start Scannforr\uScannforr.dfm</Transaction>
+    <Transaction>2019/12/30 10:22:54.000.477,C:\Users\kr\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\i4Start Scannforr\Scannforr.dproj</Transaction>
+    <Transaction>2020/01/22 07:58:22.000.102,=C:\i4Start Scannforr\uFuncoes.pas</Transaction>
+    <Transaction>2020/04/07 17:19:22.000.099,=C:\i4Start Scannforr\Unit1.pas</Transaction>
+    <Transaction>2020/07/02 11:19:40.000.909,=C:\i4s projetos\i4Start Scannforr\Unit1.pas</Transaction>
+    <Transaction>2020/07/02 13:59:18.000.832,C:\i4s projetos\i4Start Scannforr\Unit1.pas=</Transaction>
+    <Transaction>2020/08/03 10:36:46.000.742,=C:\i4s projetos\i4Start Scannforr\Unit1.pas</Transaction>
+    <Transaction>2020/08/03 10:37:48.000.245,C:\i4s projetos\i4Start Scannforr\Unit1.pas=C:\i4s projetos\i4Start Scannforr\uResult.pas</Transaction>
+    <Transaction>2020/08/03 10:37:48.000.245,C:\i4s projetos\i4Start Scannforr\Unit1.dfm=C:\i4s projetos\i4Start Scannforr\uResult.dfm</Transaction>
+    <Transaction>2020/08/03 10:43:44.000.019,C:\i4s projetos\i4Start Scannforr\uResult.dfm=C:\i4s projetos\i4Start Scannforr\uControle.dfm</Transaction>
+    <Transaction>2020/08/03 10:43:44.000.019,C:\i4s projetos\i4Start Scannforr\uResult.pas=C:\i4s projetos\i4Start Scannforr\uControle.pas</Transaction>
+    <Transaction>2020/09/25 10:47:54.000.574,C:\i4s projetos\i4Start Scannforr\uControle.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,3074 @@
+unit uControle;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Data.DB, DBAccess, Uni, MemDS, Vcl.Grids, Vcl.DBGrids, Vcl.Mask, Vcl.Buttons,
+  Vcl.Imaging.pngimage, ganttuicomps, Vcl.DBCtrls, Vcl.ToolWin, Vcl.Imaging.jpeg;
+
+type
+  TfrmControle = class(TForm)
+    Panel2: TPanel;
+    qryEventos: TUniQuery;
+    updEventos: TUniUpdateSQL;
+    dsEventos: TUniDataSource;
+    qryAreas: TUniQuery;
+    dsAreas: TUniDataSource;
+    lbLocal: TLabel;
+    qrytipo_Eventocb: TUniQuery;
+    dsTipo_eventocb: TUniDataSource;
+    dsMovto_animais: TUniDataSource;
+    updMovto_animais: TUniUpdateSQL;
+    qryMovto_animais: TUniQuery;
+    dsTipo_animalcb: TUniDataSource;
+    qryTipo_animalcb: TUniQuery;
+    pcSuperior: TPageControl;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    dbgPiquetes: TDBGrid;
+    pcControle: TPageControl;
+    TabSheet1: TTabSheet;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    dbgEventos: TDBGrid;
+    btpesquisarEvento: TGanttFlatButton;
+    mkedtEvento: TMaskEdit;
+    mkedtInclusao: TMaskEdit;
+    dbeDescricao_evento: TDBEdit;
+    dbeQtde: TDBEdit;
+    dbeValor: TDBEdit;
+    dbeData_evento: TDBEdit;
+    GanttFlatButton1: TGanttFlatButton;
+    GanttFlatButton2: TGanttFlatButton;
+    GanttFlatButton3: TGanttFlatButton;
+    dbltipoEvento: TDBLookupComboBox;
+    cbEventoCancelado: TDBCheckBox;
+    TabSheet2: TTabSheet;
+    Panel3: TPanel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    dbgMovtoSuplementos: TDBGrid;
+    GanttFlatButton4: TGanttFlatButton;
+    mkeDtSuplemento: TMaskEdit;
+    mkedtInclusaosup: TMaskEdit;
+    dbeDescricao_movto_suplemento: TDBEdit;
+    dbeQtdeSup: TDBEdit;
+    dbeValorSup: TDBEdit;
+    dbeDataSup: TDBEdit;
+    GanttFlatButton5: TGanttFlatButton;
+    GanttFlatButton6: TGanttFlatButton;
+    GanttFlatButton7: TGanttFlatButton;
+    dblTipoSuplemento: TDBLookupComboBox;
+    cbMovtoCancelado: TDBCheckBox;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    lbAreaGeral: TLabel;
+    lbPiquete: TLabel;
+    qryMovto_suplementos: TUniQuery;
+    updMovto_suplementos: TUniUpdateSQL;
+    dsMovto_suplementos: TUniDataSource;
+    dsTipo_suplementocb: TUniDataSource;
+    qryTipo_suplementocb: TUniQuery;
+    Panel4: TPanel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    dbgMovtoAnimais: TDBGrid;
+    GanttFlatButton8: TGanttFlatButton;
+    mkeDtAnimais: TMaskEdit;
+    mkeDtInclusaoAni: TMaskEdit;
+    dbeDescricao_movto_animais: TDBEdit;
+    dbeQtdeAnimais: TDBEdit;
+    dbePesoAnimais: TDBEdit;
+    dbeConsumoAnimais: TDBEdit;
+    GanttFlatButton9: TGanttFlatButton;
+    GanttFlatButton10: TGanttFlatButton;
+    GanttFlatButton11: TGanttFlatButton;
+    dblTipoAnimal: TDBLookupComboBox;
+    cbmovtoanicancelado: TDBCheckBox;
+    cbfemea: TDBCheckBox;
+    cbcastrado: TDBCheckBox;
+    cbEntrada: TDBCheckBox;
+    cbsaida: TDBCheckBox;
+    Label19: TLabel;
+    dbeDataAni: TDBEdit;
+    cbnormal: TDBCheckBox;
+    ScrollBox1: TScrollBox;
+    pnControle: TPanel;
+    qryEventosCiclo: TUniQuery;
+    dsEventosCiclo: TUniDataSource;
+    qryEventosMonta: TUniQuery;
+    qrySuplementosMonta: TUniQuery;
+    qryMedicoesMonta: TUniQuery;
+    qryAnimaisMonta: TUniQuery;
+    TabSheet5: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet9: TTabSheet;
+    pnTipoSuplemento: TPanel;
+    Label41: TLabel;
+    Label58: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    dbgTipoSuplemento: TDBGrid;
+    ToolBar13: TToolBar;
+    DBNavigator10: TDBNavigator;
+    Panel17: TPanel;
+    lbTipoSuplemento: TLabel;
+    dbeDescricaoTS: TDBEdit;
+    dbcunidades: TDBLookupComboBox;
+    dbeIndiceSuplemento: TDBEdit;
+    pnTipoAnimal: TPanel;
+    Label62: TLabel;
+    Label63: TLabel;
+    Label64: TLabel;
+    dbgTipoAnimal: TDBGrid;
+    ToolBar12: TToolBar;
+    DBNavigator9: TDBNavigator;
+    Panel16: TPanel;
+    lbTipoAnimal: TLabel;
+    dbepesoVivo: TDBEdit;
+    dbeDescricaoTA: TDBEdit;
+    dbepercConsumo: TDBEdit;
+    pnTipoEvento: TPanel;
+    Label40: TLabel;
+    Label59: TLabel;
+    dbgTipoEvento: TDBGrid;
+    ToolBar9: TToolBar;
+    DBNavigator8: TDBNavigator;
+    dbeDescricao: TDBEdit;
+    dbcUnidadee: TDBLookupComboBox;
+    Panel15: TPanel;
+    lbtipoEvento: TLabel;
+    dcbentrada: TDBCheckBox;
+    dcbsaida: TDBCheckBox;
+    DBCheckBox2: TDBCheckBox;
+    DBCheckBox3: TDBCheckBox;
+    qrytipo_Evento: TUniQuery;
+    updTipo_Evento: TUniUpdateSQL;
+    dsTipo_Evento: TUniDataSource;
+    qryTipo_Animal: TUniQuery;
+    updTipo_Animal: TUniUpdateSQL;
+    dsTipo_Animal: TUniDataSource;
+    qryTipo_Suplemento: TUniQuery;
+    updTipo_Suplemento: TUniUpdateSQL;
+    dsTipo_Suplemento: TUniDataSource;
+    pnMontaLTempo: TPanel;
+    lbDescricaoEvento: TLabel;
+    Panel5: TPanel;
+    Label20: TLabel;
+    mkeDtCiclo: TMaskEdit;
+    GanttFlatButton12: TGanttFlatButton;
+    dbgEventosCiclos: TDBGrid;
+    ToolBar1: TToolBar;
+    GanttFlatButton13: TGanttFlatButton;
+    Panel7: TPanel;
+    lbMontaLTempo: TLabel;
+    Image2: TImage;
+    Panel6: TPanel;
+    lbdata1: TLabel;
+    lbtipo1: TLabel;
+    img1: TImage;
+    mm1: TMemo;
+    mmdias1: TMemo;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Panel10: TPanel;
+    GanttFlatButton14: TGanttFlatButton;
+    Label23: TLabel;
+    lbCiclo: TLabel;
+    mkeDataLimite: TMaskEdit;
+    Button1: TButton;
+    cbTodosPiquetes: TCheckBox;
+    Memo1: TMemo;
+    imgSuplemento: TImage;
+    imgMedicao: TImage;
+    imgAnimal: TImage;
+    imgEvento: TImage;
+    lbdata2: TLabel;
+    mmdias2: TMemo;
+    lbtipo2: TLabel;
+    img2: TImage;
+    mm2: TMemo;
+    lbdata3: TLabel;
+    mmdias3: TMemo;
+    lbtipo3: TLabel;
+    img3: TImage;
+    mm3: TMemo;
+    lbdata4: TLabel;
+    mmdias4: TMemo;
+    lbtipo4: TLabel;
+    img4: TImage;
+    mm4: TMemo;
+    lbdata5: TLabel;
+    mmdias5: TMemo;
+    lbtipo5: TLabel;
+    img5: TImage;
+    mm5: TMemo;
+    lbdata6: TLabel;
+    mmdias6: TMemo;
+    lbtipo6: TLabel;
+    img6: TImage;
+    mm6: TMemo;
+    lbdata7: TLabel;
+    mmdias7: TMemo;
+    lbtipo7: TLabel;
+    img7: TImage;
+    mm7: TMemo;
+    lbdata8: TLabel;
+    mmdias8: TMemo;
+    lbtipo8: TLabel;
+    img8: TImage;
+    mm8: TMemo;
+    mmdias9: TMemo;
+    lbdata9: TLabel;
+    lbtipo9: TLabel;
+    img9: TImage;
+    mm9: TMemo;
+    mmdias10: TMemo;
+    lbdata10: TLabel;
+    lbtipo10: TLabel;
+    img10: TImage;
+    mm10: TMemo;
+    mmdias11: TMemo;
+    lbdata11: TLabel;
+    lbtipo11: TLabel;
+    img11: TImage;
+    mm11: TMemo;
+    mmdias12: TMemo;
+    lbdata12: TLabel;
+    lbtipo12: TLabel;
+    img12: TImage;
+    mm12: TMemo;
+    mmdias13: TMemo;
+    lbdata13: TLabel;
+    lbtipo13: TLabel;
+    img13: TImage;
+    mm13: TMemo;
+    mmdias14: TMemo;
+    lbdata14: TLabel;
+    lbtipo14: TLabel;
+    img14: TImage;
+    mm14: TMemo;
+    mmdias15: TMemo;
+    lbdata15: TLabel;
+    lbtipo15: TLabel;
+    img15: TImage;
+    mm15: TMemo;
+    mmdias16: TMemo;
+    lbdata16: TLabel;
+    lbtipo16: TLabel;
+    img16: TImage;
+    mm16: TMemo;
+    mmdias17: TMemo;
+    lbdata17: TLabel;
+    lbtipo17: TLabel;
+    img17: TImage;
+    mm17: TMemo;
+    mmdias18: TMemo;
+    lbdata18: TLabel;
+    lbtipo18: TLabel;
+    img18: TImage;
+    mm18: TMemo;
+    lbdata19: TLabel;
+    lbtipo19: TLabel;
+    img19: TImage;
+    mmdias19: TMemo;
+    mm19: TMemo;
+    mmdias20: TMemo;
+    lbdata20: TLabel;
+    lbtipo20: TLabel;
+    img20: TImage;
+    mm20: TMemo;
+    mmdias21: TMemo;
+    lbdata21: TLabel;
+    lbtipo21: TLabel;
+    img21: TImage;
+    mm21: TMemo;
+    mmdias22: TMemo;
+    lbdata22: TLabel;
+    lbtipo22: TLabel;
+    img22: TImage;
+    mm22: TMemo;
+    qryConsumo_raca: TUniQuery;
+    TabSheet10: TTabSheet;
+    Panel11: TPanel;
+    Panel12: TPanel;
+    Label21: TLabel;
+    Label22: TLabel;
+    GanttFlatButton15: TGanttFlatButton;
+    MaskEdit1: TMaskEdit;
+    Button2: TButton;
+    Image1: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    procedure FormCreate(Sender: TObject);
+    procedure MoveNomes;
+    procedure dbgPiquetesCellClick(Column: TColumn);
+    procedure btpesquisarEventoClick(Sender: TObject);
+    procedure PesquisaEventos;
+    procedure dbgEventosTitleClick(Column: TColumn);
+    procedure GanttFlatButton1Click(Sender: TObject);
+    procedure GanttFlatButton3Click(Sender: TObject);
+    procedure GanttFlatButton2Click(Sender: TObject);
+    procedure cbEventoCanceladoMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure GanttFlatButton5Click(Sender: TObject);
+    procedure GanttFlatButton6Click(Sender: TObject);
+    procedure GanttFlatButton7Click(Sender: TObject);
+    procedure GanttFlatButton4Click(Sender: TObject);
+    procedure pesquisaMovtoSuplemento;
+    procedure cbMovtoCanceladoMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure dbgMovtoSuplementosTitleClick(Column: TColumn);
+    procedure cbEntradaClick(Sender: TObject);
+    procedure cbsaidaClick(Sender: TObject);
+    procedure cbfemeaClick(Sender: TObject);
+    procedure cbcastradoClick(Sender: TObject);
+    procedure cbnormalClick(Sender: TObject);
+    procedure GanttFlatButton8Click(Sender: TObject);
+    procedure pesquisaMovtoAnimais;
+    procedure GanttFlatButton9Click(Sender: TObject);
+    procedure GanttFlatButton10Click(Sender: TObject);
+    procedure GanttFlatButton11Click(Sender: TObject);
+    procedure dbgMovtoAnimaisTitleClick(Column: TColumn);
+    procedure dblTipoAnimalClick(Sender: TObject);
+    procedure cbmovtoanicanceladoMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure pcControleChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure dbgEventosCiclosCellClick(Column: TColumn);
+    procedure GanttFlatButton12Click(Sender: TObject);
+    procedure pcSuperiorChange(Sender: TObject);
+    procedure LeEventosCiclo;
+    procedure GanttFlatButton13Click(Sender: TObject);
+    procedure dcbentradaClick(Sender: TObject);
+    procedure dcbsaidaClick(Sender: TObject);
+    procedure DBNavigator8Click(Sender: TObject; Button: TNavigateBtn);
+    procedure qrytipo_EventoAfterDelete(DataSet: TDataSet);
+    procedure qrytipo_EventoAfterEdit(DataSet: TDataSet);
+    procedure qrytipo_EventoAfterPost(DataSet: TDataSet);
+    procedure qrytipo_EventoBeforeDelete(DataSet: TDataSet);
+    procedure qrytipo_EventoBeforePost(DataSet: TDataSet);
+    procedure DBNavigator10Click(Sender: TObject; Button: TNavigateBtn);
+    procedure qryTipo_AnimalAfterDelete(DataSet: TDataSet);
+    procedure qryTipo_AnimalAfterEdit(DataSet: TDataSet);
+    procedure qryTipo_AnimalAfterPost(DataSet: TDataSet);
+    procedure qryTipo_AnimalBeforeDelete(DataSet: TDataSet);
+    procedure qryTipo_SuplementoAfterDelete(DataSet: TDataSet);
+    procedure qryTipo_SuplementoAfterEdit(DataSet: TDataSet);
+    procedure qryTipo_SuplementoAfterPost(DataSet: TDataSet);
+    procedure qryTipo_SuplementoBeforeDelete(DataSet: TDataSet);
+    procedure qryTipo_SuplementoBeforePost(DataSet: TDataSet);
+    procedure DBNavigator9Click(Sender: TObject; Button: TNavigateBtn);
+    procedure qryTipo_AnimalBeforePost(DataSet: TDataSet);
+    procedure GanttFlatButton14Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure LeDadosLinhaTempo;
+    procedure ProcessaDadosLinhaTempo;
+    procedure InicializaVariaveis;
+    procedure ApagaLinhaTempo;
+    procedure ProcessaAnimais;
+    procedure IncluiAnimais;
+    procedure ProcessaMedicoes;
+    procedure IncluiMedicoes;
+    procedure ProcessaEventos;
+    procedure incluiEventos;
+    procedure ProcessaSuplementos;
+    procedure IncluiSuplementos;
+    procedure GuardaAnimaisTabelaEmbrapa;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmControle: TfrmControle;
+
+implementation
+
+uses uscannforr, ufuncoes;
+var vsortData, vsortInclusao, vsortDescricao, vinativo, vcresc, ventrada,
+    vsaida, vfemea, vcastrado, vnormal, vTemErro : boolean;
+    vDataFimCiclo, vDataFimLinhaTempo, vDataInicioCiclo : string;
+
+    vSaldoCrescimento, vSaldoConsumo, vSaldoRetirada, vSaldoSilagem,
+    vSaldoAcamamento, vPesoVivoGanhoTotal, vi : integer;
+
+    vQtdeAnimalAtual : array[1..100] of integer;
+    vPesoVivoInicial : array[1..100] of currency;
+    vPesoVivoGanho : array[1..100] of currency;
+    vPesoVivoAcumulado : array[1..100] of currency;
+    vConsumoMSdiakg : array[1..100] of currency;
+    vConsumoMSdiaAcumuladokg : array[1..100] of currency;
+    vid_raca : array[1..100] of integer;
+    vseq_tipo_animal : array[1..100] of integer;
+    vQtdeAnimalSaida : array[1..100] of integer;
+    vUltimaDataAnimal : array[1..100] of string;
+    vDescricaoTipo : array[1..100] of string;
+
+    vTamanhoForragemInicialcm : array[1..100] of integer;
+    vCrescimentoForragemAcumuladocm : array[1..100] of integer;
+
+    vdata : tdatetime;
+{$R *.dfm}
+
+var xSelectedIndex : integer;
+
+procedure TfrmControle.btpesquisarEventoClick(Sender: TObject);
+begin
+
+  PesquisaEventos;
+
+end;
+
+procedure TfrmControle.Button1Click(Sender: TObject);
+begin
+
+  if strTOdateTime(mkeDataLimite.text) > strTOdateTime(vDataFimCiclo) then
+    begin
+      showmessage('data para montar linha do tempo maior que a data final do ciclo');
+      mkeDataLimite.text := vDataFimCiclo;
+      exit;
+    end;
+
+end;
+
+procedure TfrmControle.PesquisaEventos;
+var xfiltroData, xorderby : string;
+
+begin
+
+  if length(mkeDtEvento.Text) > 0 then
+    xfiltroData := ' and data_evento >= :dt'
+  else
+  if length(mkeDtInclusao.Text) > 0 then
+    xfiltroData := ' and data_inclusao >= :dt'
+  else
+    begin
+      showmessage('informe uma data para pesquisa');
+      mkeDtEvento.SetFocus;
+      exit;
+    end;
+
+  if vsortData then
+    if vcresc then
+      xorderby := ' order by data_evento asc, seq_evento'
+    else
+      xorderby := ' order by data_evento desc, seq_evento'
+  else
+  if vsortInclusao then
+    if vcresc then
+      xorderby := ' order by data_inclusao asc, seq_evento'
+    else
+      xorderby := ' order by data_inclusao desc, seq_evento'
+  else
+  if vsortDescricao then
+    if vcresc then
+      xorderby := ' order by descricao_evento asc, seq_evento'
+    else
+      xorderby := ' order by descricao_evento desc, seq_evento'
+  else
+  if vinativo then
+    begin
+      xorderby := ' order by data_evento asc, seq_evento';
+      xfiltroData := xfiltroData + ' and cancelado = :cancelado ';
+    end
+  else
+    xorderby := ' order by data_evento asc, seq_evento';
+
+  qryEventos.Close;
+  qryEventos.SQL.Clear;
+  qryEventos.SQL.Text :=
+
+' Select *' +
+' from eventos_tb' +
+' where seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+xfiltroData +
+xorderby;
+
+  qryEventos.Params[0].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventos.Params[1].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventos.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+
+  if length(mkeDtEvento.Text) > 0 then
+    qryEventos.Params[3].AsString := mkeDtEvento.Text
+  else
+    qryEventos.Params[3].AsString := mkeDtInclusao.Text;
+
+  if vinativo then
+    if vcresc then
+      qryEventos.Params[4].AsBoolean := true
+    else
+      qryEventos.Params[4].AsBoolean := false;
+
+  qryEventos.Open;
+
+end;
+
+procedure TfrmControle.cbcastradoClick(Sender: TObject);
+begin
+
+  if cbcastrado.Checked then
+    begin
+      cbfemea.Checked := false;
+      cbnormal.Checked := false;
+    end;
+
+end;
+
+procedure TfrmControle.cbEntradaClick(Sender: TObject);
+begin
+
+  if cbEntrada.Checked then
+    cbsaida.Checked := false;
+
+end;
+
+procedure TfrmControle.cbEventoCanceladoMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var xcancelado : boolean;
+
+begin
+
+  if qryeventos.State = dsinsert then
+    exit;
+
+  if qryeventos.FieldByName('seq_tipo_evento').AsInteger =
+     frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger then
+    begin
+      // PROCURA DATA DE INICIO DO CICLO
+      vDataInicioCiclo := dataInicioCiclo(
+            qryeventos.FieldByName('seq_empresa').AsInteger,
+            qryeventos.FieldByName('seq_area_geral').AsInteger,
+            qryeventos.FieldByName('seq_area').AsInteger,
+            '31/12/3000');
+      if (copy(vDataInicioCiclo, 1, 5) <> '!@#$%') and
+         (strTOdateTime(vDataInicioCiclo) >
+          qryEventos.FieldByName('data_evento').AsDateTime) then
+        begin
+          showmessage('o ciclo já está fechado para esse início de ciclo, ' +
+                      'não é permitido ativar/desativar');
+          qryeventos.CancelUpdates;
+          exit;
+        end;
+    end
+  else
+    begin
+      // PROCURA DATA DE FIM DO CICLO
+      vDataFimCiclo := dataFimCiclo(
+            qryeventos.FieldByName('seq_empresa').AsInteger,
+            qryeventos.FieldByName('seq_area_geral').AsInteger,
+            qryeventos.FieldByName('seq_area').AsInteger,
+            qryeventos.FieldByName('data_evento').AsString);
+      if vDataFimCiclo <> '31/12/3000' then
+        begin
+          showmessage('o ciclo já está fechado para esse evento, ' +
+                      'não é permitido ativar/desativar');
+          qryeventos.CancelUpdates;
+          exit;
+        end;
+    end;
+
+  if not cbEventoCancelado.Checked then
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja ativar esse evento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryeventos.CancelUpdates;
+                      exit;
+                    end;
+      qryeventos.CancelUpdates;
+      qryeventos.Edit;
+      cbEventoCancelado.Checked := false;
+      qryeventos.FieldByName('cancelado').AsBoolean := false;
+      qryeventos.ApplyUpdates;
+      qryeventos.CommitUpdates;
+
+      xcancelado := false;
+    end
+  else
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja inativar esse evento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryeventos.CancelUpdates;
+                      exit;
+                    end;
+      qryeventos.CancelUpdates;
+      qryeventos.Edit;
+      cbEventoCancelado.Checked := true;
+      qryeventos.FieldByName('cancelado').AsBoolean := true;
+      qryeventos.ApplyUpdates;
+      qryeventos.CommitUpdates;
+
+      xcancelado := true;
+    end;
+
+  if qryeventos.FieldByName('seq_tipo_evento').AsInteger =
+     frmscannforr.qrypadrao_sistema.
+        FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger then
+    begin
+      frmscannforr.qryGeral2.Close;
+      frmscannforr.qryGeral2.SQL.Text :=
+    ' update eventos_tb' +
+    ' set cancelado = :cancelado' +
+    ' where seq_empresa = :seq_empresa' +
+    '   and seq_area_geral = :seq_area_geral' +
+    '   and seq_area <> :seq_area' +
+    '   and seq_tipo_evento = :seq_tipo_evento' +
+    '   and data_evento = :data_evento' +
+    '   and data_inclusao = :data_inclusao';
+
+      frmscannforr.qryGeral2.Params[0].AsBoolean := xcancelado;
+      frmscannforr.qryGeral2.Params[1].AsInteger :=
+            qryeventos.FieldByName('seq_empresa').AsInteger;
+      frmscannforr.qryGeral2.Params[2].AsInteger :=
+            qryeventos.FieldByName('seq_area_geral').AsInteger;
+      frmscannforr.qryGeral2.Params[3].AsInteger :=
+            qryeventos.FieldByName('seq_area').AsInteger;
+
+      frmscannforr.qryGeral2.Params[4].AsInteger :=
+            frmscannforr.qrypadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+
+      frmscannforr.qryGeral2.Params[5].AsString :=
+            qryeventos.FieldByName('data_evento').AsString;
+      frmscannforr.qryGeral2.Params[6].AsString :=
+            qryeventos.FieldByName('data_inclusao').AsString;
+
+      frmscannforr.qryGeral2.ExecSQL;
+    end;
+
+  showmessage('evento atualizado!');
+
+end;
+
+procedure TfrmControle.cbfemeaClick(Sender: TObject);
+begin
+
+  if cbfemea.Checked then
+    begin
+      cbcastrado.Checked := false;
+      cbnormal.Checked := false;
+    end;
+
+end;
+
+procedure TfrmControle.cbMovtoCanceladoMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+
+  if qryMovto_suplementos.State = dsinsert then
+    exit;
+
+  // PROCURA DATA DE FIM DO CICLO
+  vDataFimCiclo := dataFimCiclo(
+        qryMovto_suplementos.FieldByName('seq_empresa').AsInteger,
+        qryMovto_suplementos.FieldByName('seq_area_geral').AsInteger,
+        qryMovto_suplementos.FieldByName('seq_area').AsInteger,
+        qryMovto_suplementos.FieldByName('data_movto_suplemento').AsString);
+  if vDataFimCiclo <> '31/12/3000' then
+    begin
+      showmessage('o ciclo já está fechado para esse movimento, ' +
+                  'não é permitido ativar/desativar');
+      qryMovto_suplementos.CancelUpdates;
+      exit;
+    end;
+
+  if not cbMovtoCancelado.Checked then
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja ativar esse movimento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryMovto_suplementos.CancelUpdates;
+                      exit;
+                    end;
+      qryMovto_suplementos.CancelUpdates;
+      qryMovto_suplementos.Edit;
+      cbMovtoCancelado.Checked := false;
+      qryMovto_suplementos.FieldByName('cancelado').AsBoolean := false;
+      qryMovto_suplementos.ApplyUpdates;
+      qryMovto_suplementos.CommitUpdates;
+    end
+  else
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja inativar esse movimento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryMovto_suplementos.CancelUpdates;
+                      exit;
+                    end;
+      qryMovto_suplementos.CancelUpdates;
+      qryMovto_suplementos.Edit;
+      cbMovtoCancelado.Checked := true;
+      qryMovto_suplementos.FieldByName('cancelado').AsBoolean := true;
+      qryMovto_suplementos.ApplyUpdates;
+      qryMovto_suplementos.CommitUpdates;
+    end;
+
+  showmessage('movimento atualizado!');
+
+end;
+
+procedure TfrmControle.cbnormalClick(Sender: TObject);
+begin
+
+  if cbnormal.Checked then
+    begin
+      cbcastrado.Checked := false;
+      cbfemea.Checked := false;
+    end;
+
+end;
+
+procedure TfrmControle.cbsaidaClick(Sender: TObject);
+begin
+
+  if cbsaida.Checked then
+    cbentrada.Checked := false;
+
+end;
+
+procedure TfrmControle.cbmovtoanicanceladoMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+
+  if qryMovto_animais.State = dsinsert then
+    exit;
+
+  // PROCURA DATA DE FIM DO CICLO
+  vDataFimCiclo := dataFimCiclo(
+        qryMovto_animais.FieldByName('seq_empresa').AsInteger,
+        qryMovto_animais.FieldByName('seq_area_geral').AsInteger,
+        qryMovto_animais.FieldByName('seq_area').AsInteger,
+        qryMovto_animais.FieldByName('data_movto_animais').AsString);
+  if vDataFimCiclo <> '31/12/3000' then
+    begin
+      showmessage('o ciclo já está fechado para esse movimento, ' +
+                  'não é permitido ativar/desativar');
+      qryMovto_animais.CancelUpdates;
+      exit;
+    end;
+
+  if not cbMovtoaniCancelado.Checked then
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja ativar esse movimento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryMovto_animais.CancelUpdates;
+                      exit;
+                    end;
+      qryMovto_animais.CancelUpdates;
+      qryMovto_animais.Edit;
+      cbMovtoaniCancelado.Checked := false;
+      qryMovto_animais.FieldByName('cancelado').AsBoolean := false;
+      qryMovto_animais.ApplyUpdates;
+      qryMovto_animais.CommitUpdates;
+    end
+  else
+    begin
+      if MessageDlg ('***** ATENÇÃO - Deseja inativar esse movimento?'
+                    , mtWarning,[mbYes, mbNo], 0) = mrNo then
+                    begin
+                      qryMovto_animais.CancelUpdates;
+                      exit;
+                    end;
+      qryMovto_animais.CancelUpdates;
+      qryMovto_animais.Edit;
+      cbMovtoaniCancelado.Checked := true;
+      qryMovto_animais.FieldByName('cancelado').AsBoolean := true;
+      qryMovto_animais.ApplyUpdates;
+      qryMovto_animais.CommitUpdates;
+    end;
+
+  showmessage('movimento atualizado!');
+
+end;
+
+procedure TfrmControle.dbgEventosCiclosCellClick(Column: TColumn);
+begin
+
+  if qryEventosCiclo.RecordCount > 0 then
+    begin
+      lbDescricaoEvento.Caption :=
+        qryEventosCiclo.FieldByName('descricao_evento').AsString;
+    end;
+
+end;
+
+procedure TfrmControle.dbgEventosTitleClick(Column: TColumn);
+begin
+
+  if vcresc then
+    vcresc := false
+  else
+    vcresc := true;
+
+  vsortData := false;
+  vsortInclusao := false;
+  vsortDescricao := false;
+  vinativo := false;
+
+  if column.FieldName = 'data_evento' then
+    begin
+      vsortData := true;
+      PesquisaEventos;
+      exit;
+    end;
+
+  if column.FieldName = 'data_inclusao' then
+    begin
+      vsortInclusao := true;
+      PesquisaEventos;
+      exit;
+    end;
+
+  if column.FieldName = 'descricao_evento' then
+    begin
+      vsortDescricao := true;
+      PesquisaEventos;
+      exit;
+    end;
+
+  if column.FieldName = 'cancelado' then
+    begin
+      vinativo := true;
+      PesquisaEventos;
+      exit;
+    end;
+
+end;
+
+procedure TfrmControle.dbgPiquetesCellClick(Column: TColumn);
+begin
+
+  xSelectedIndex := dbgpiquetes.SelectedIndex;
+  MoveNomes;
+
+  PesquisaEventos;
+  pesquisaMovtoSuplemento;
+  pesquisaMovtoAnimais;
+  LeEventosCiclo;
+
+end;
+
+procedure TfrmControle.dblTipoAnimalClick(Sender: TObject);
+begin
+
+  if qryMovto_animais.State = dsinsert then
+    begin
+      qryMovto_Animais.FieldByName('peso_vivo_emkg').AsCurrency :=
+          qryTipo_Animalcb.FieldByName('peso_vivo_emkg').AsCurrency;
+      qryMovto_Animais.FieldByName('perc_consumo_mspvdia').AsCurrency :=
+          qryTipo_Animalcb.FieldByName('perc_consumo_mspvdia').AsCurrency;
+    end;
+
+end;
+
+procedure TfrmControle.DBNavigator10Click(Sender: TObject;
+  Button: TNavigateBtn);
+begin
+
+  if button = nbInsert then
+    dbeDescricaoTS.SetFocus;
+
+end;
+
+procedure TfrmControle.DBNavigator8Click(Sender: TObject; Button: TNavigateBtn);
+begin
+
+  if button = nbInsert then
+    dbeDescricao.SetFocus;
+
+end;
+
+procedure TfrmControle.DBNavigator9Click(Sender: TObject; Button: TNavigateBtn);
+begin
+
+  if button = nbInsert then
+    dbeDescricaoTA.SetFocus;
+
+end;
+
+procedure TfrmControle.dcbentradaClick(Sender: TObject);
+begin
+
+  if dcbEntrada.Checked then
+    dcbsaida.Checked := false;
+
+end;
+
+procedure TfrmControle.dcbsaidaClick(Sender: TObject);
+begin
+
+  if dcbsaida.Checked then
+    dcbentrada.Checked := false;
+
+end;
+
+procedure TfrmControle.dbgMovtoAnimaisTitleClick(Column: TColumn);
+begin
+
+  if vcresc then
+    vcresc := false
+  else
+    vcresc := true;
+
+  vsortDescricao := false;
+  vsortInclusao := false;
+  vsortData := false;
+  vinativo := false;
+  ventrada := false;
+  vsaida := false;
+  vfemea := false;
+  vcastrado := false;
+  vnormal := false;
+
+  if column.FieldName = 'entrada' then
+    begin
+      ventrada := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'saida' then
+    begin
+      vsaida := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'data_movto_animais' then
+    begin
+      vsortData := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'data_inclusao' then
+    begin
+      vsortInclusao := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'descricao_movto_animais' then
+    begin
+      vsortDescricao := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'cancelado' then
+    begin
+      vinativo := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'femea' then
+    begin
+      vfemea := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'castrado' then
+    begin
+      vcastrado := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+  if column.FieldName = 'normal' then
+    begin
+      vnormal := true;
+      pesquisaMovtoAnimais;
+      exit;
+    end;
+
+end;
+
+procedure TfrmControle.dbgMovtoSuplementosTitleClick(Column: TColumn);
+begin
+
+  if vcresc then
+    vcresc := false
+  else
+    vcresc := true;
+
+  vsortData := false;
+  vsortInclusao := false;
+  vsortDescricao := false;
+  vinativo := false;
+
+  if column.FieldName = 'data_movto_suplemento' then
+    begin
+      vsortData := true;
+      pesquisaMovtoSuplemento;
+      exit;
+    end;
+
+  if column.FieldName = 'data_inclusao' then
+    begin
+      vsortInclusao := true;
+      pesquisaMovtoSuplemento;
+      exit;
+    end;
+
+  if column.FieldName = 'descricao_movto_suplemento' then
+    begin
+      vsortDescricao := true;
+      pesquisaMovtoSuplemento;
+      exit;
+    end;
+
+  if column.FieldName = 'cancelado' then
+    begin
+      vinativo := true;
+      pesquisaMovtoSuplemento;
+      exit;
+    end;
+
+end;
+
+procedure TfrmControle.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+
+   qryAreas.Close;
+   qryEventos.Close;
+   qryMovto_animais.Close;
+   qryMovto_suplementos.Close;
+   qryTipo_animalcb.Close;
+   qryTipo_suplementocb.Close;
+   qryTipo_eventocb.Close;
+
+   qryAnimaisMonta.Close;
+   qryEventosCiclo.close;
+   qryEventosMonta.Close;
+
+   qryMedicoesMonta.Close;
+   qrySuplementosMonta.Close;
+   qryTipo_animal.Close;
+   qryTipo_suplemento.Close;
+   qryTipo_evento.Close;
+
+end;
+
+procedure TfrmControle.FormCreate(Sender: TObject);
+begin
+
+  frmControle.Height := 532;
+  frmControle.Width  := 903;
+
+  frmcontrole.pcControle.TabIndex := 0;
+
+  mkeDtEvento.Text := '01' + formatDateTime('/mm/yyyy', now);
+  mkeDtInclusao.Text := '01' + formatDateTime('/mm/yyyy', now);
+
+  mkeDtSuplemento.Text := '01' + formatDateTime('/mm/yyyy', now);
+  mkeDtInclusaoSup.Text := '01' + formatDateTime('/mm/yyyy', now);
+
+  mkeDtAnimais.Text := '01' + formatDateTime('/mm/yyyy', now);
+  mkeDtInclusaoAni.Text := '01' + formatDateTime('/mm/yyyy', now);
+
+  qryAreas.Close;
+  qryAreas.Open;
+
+  qrytipo_eventocb.Close;
+  qrytipo_eventocb.Open;
+
+  qrytipo_suplementocb.Close;
+  qrytipo_suplementocb.Open;
+
+  qrytipo_animalcb.Close;
+  qrytipo_animalcb.Open;
+
+  mkeDtCiclo.Text := DataInicioCiclo(
+        qryAreas.FieldByName('seq_empresa').AsInteger,
+        qryAreas.FieldByName('seq_area_geral').AsInteger,
+        qryAreas.FieldByName('seq_area').AsInteger,
+        '31/12/3000');
+
+  if (copy(mkeDtCiclo.Text, 1, 5) = '!@#$%') then
+    mkeDtCiclo.Text := '01' + formatDateTime('/mm/yyyy', now);
+
+  PesquisaEventos;
+  pesquisaMovtoSuplemento;
+  pesquisaMovtoAnimais;
+
+  MoveNomes;
+  ApagaLinhaTempo;
+
+  dbgPiquetes.Columns[0].Width := 280;
+  dbgPiquetes.Columns[1].Width := 280;
+  dbgPiquetes.Columns[2].Width := 280;
+
+  pcControle.TabIndex := 0;
+  pcSuperior.TabIndex := 0;
+
+end;
+
+procedure TfrmControle.GanttFlatButton10Click(Sender: TObject);
+var xdataConfere : tdatetime;
+
+begin
+
+  if qryMovto_animais.State <> dsinsert then
+    begin
+      showmessage('é permitido somente inclusão de movimentos de animais');
+      qryMovto_animais.CancelUpdates;
+      exit;
+    end;
+
+  if length(dblTipoAnimal.Text) = 0 then
+    begin
+      showmessage('informe o tipo de animal do movimento');
+      exit;
+    end;
+
+  if length(dbeQtdeAnimais.Text) = 0 then
+    dbeQtdeAnimais.Text := '0';
+  if length(dbePesoAnimais.Text) = 0 then
+    dbePesoAnimais.Text := '0';
+  if length(dbeConsumoAnimais.Text) = 0 then
+    dbeConsumoAnimais.Text := '0';
+
+  if ( (length(dbeQtdeAnimais.Text) = 0) or (strTocurr(dbeQtdeAnimais.Text) <= 0) ) then
+    begin
+      showmessage('informe a quantidade de animais do movimento');
+      dbeQtdeAnimais.SetFocus;
+      exit;
+    end;
+
+  if qryTipo_Animalcb.FieldByName('peso_vivo_emkg').AsCurrency > 0 then
+  if ( (length(dbePesoAnimais.Text) = 0) or (strTocurr(dbePesoAnimais.Text) <= 0) ) then
+    begin
+      showmessage('informe o peso vivo por animal em kg');
+      dbePesoAnimais.SetFocus;
+      exit;
+    end;
+
+  if qryTipo_Animalcb.FieldByName('perc_consumo_mspvdia').AsCurrency > 0 then
+  if ( (length(dbeConsumoAnimais.Text) = 0) or (strTocurr(dbeConsumoAnimais.Text) <= 0) ) then
+    begin
+      showmessage('informe o percentual de consumo por peso vivo, por dia do animal');
+      dbeConsumoAnimais.SetFocus;
+      exit;
+    end;
+
+  if qryTipo_Animalcb.FieldByName('peso_vivo_emkg').AsCurrency = 0 then
+  if strTocurr(dbePesoAnimais.Text) > 0 then
+    begin
+      showmessage('peso vivo por animal em kg tem deve ficar zerado para esse tipo de animal');
+      dbePesoAnimais.SetFocus;
+      exit;
+    end;
+
+  if qryTipo_Animalcb.FieldByName('perc_consumo_mspvdia').AsCurrency = 0 then
+  if strTocurr(dbeConsumoAnimais.Text) > 0 then
+    begin
+      showmessage('percentual de consumo por peso vivo tem de ficar zerado para esse tipo de animal');
+      dbeConsumoAnimais.SetFocus;
+      exit;
+    end;
+
+  if (not cbentrada.Checked) and
+     (not cbsaida.Checked) then
+    begin
+      showmessage('clique em entrada ou saida para o movimento');
+      exit;
+    end;
+
+  if (not cbfemea.Checked) and
+     (not cbcastrado.Checked) and
+     (not cbnormal.Checked) then
+    begin
+      showmessage('clique em fêmea ou castrado ou normal para o animal');
+      exit;
+    end;
+
+  try
+    xdataConfere := strTOdateTime(dbedataAni.Text);
+  except
+    showmessage('data inválida');
+    dbeDataAni.SetFocus;
+    exit;
+  end;
+
+  // PROCURA DATA DE FIM DO CICLO
+  vDataFimCiclo := dataFimCiclo(
+        qryAreas.FieldByName('seq_empresa').AsInteger,
+        qryAreas.FieldByName('seq_area_geral').AsInteger,
+        qryAreas.FieldByName('seq_area').AsInteger,
+        dbeDataAni.Text);
+  if vDataFimCiclo <> '31/12/3000' then
+    begin
+      showmessage('o ciclo já está fechado para essa data de movimento');
+      dbeDataAni.SetFocus;
+      exit;
+    end;
+
+  qryMovto_animais.FieldByName('seq_empresa').AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryMovto_animais.FieldByName('seq_area_geral').AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryMovto_animais.FieldByName('seq_area').AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryMovto_animais.FieldByName('data_inclusao').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryMovto_animais.FieldByName('cancelado').AsBoolean := false;
+
+  if not cbentrada.Checked then
+    qryMovto_animais.FieldByName('entrada').AsBoolean := false;
+  if not cbsaida.Checked then
+    qryMovto_animais.FieldByName('saida').AsBoolean := false;
+  if not cbfemea.Checked then
+    qryMovto_animais.FieldByName('femea').AsBoolean := false;
+  if not cbcastrado.Checked then
+    qryMovto_animais.FieldByName('castrado').AsBoolean := false;
+  if not cbnormal.Checked then
+    qryMovto_animais.FieldByName('normal').AsBoolean := false;
+
+  try
+    qryMovto_animais.ApplyUpdates;
+    qryMovto_animais.CommitUpdates;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir movimento animais : '+E.Message);
+      qryMovto_animais.CancelUpdates;
+      exit;
+    end;
+  end;
+
+  showmessage('Movimento incluido!');
+
+end;
+
+procedure TfrmControle.GanttFlatButton11Click(Sender: TObject);
+begin
+
+  qryMovto_animais.CancelUpdates;
+
+end;
+
+procedure TfrmControle.GanttFlatButton12Click(Sender: TObject);
+begin
+
+  LeEventosCiclo;
+
+end;
+
+procedure TfrmControle.LeDadosLinhaTempo;
+var xevento, xsuplemento, xanimal, xmedicao, xnada : string;
+    xseq_areaT : Integer;
+
+begin
+
+  xevento := '''Evento''';
+  xsuplemento := '''Suplemento''';
+  xanimal := '''Animal''';
+  xmedicao := '''Medição''';
+  xnada := '''nada''';
+
+  xseq_areat := 0;
+  if cbtodosPiquetes.Checked then
+    xseq_areat := 99999;
+
+// busca dados union
+  qryEventosMonta.Close;
+  qryEventosMonta.SQL.Text :=
+
+' select 3 as ordem, e.data_evento as data,' +
+'     e.seq_empresa as seq_empresa, e.seq_area_geral as seq_area_geral,' +
+'     e.seq_area as seq_area,' +
+'     t.seq_tipo_evento as seq_tipo, ' + xevento +
+'     as tipo, e.descricao_evento as descricao,' +
+'     e.valor_evento as valor, e.qtde_evento as qtde, t.entrada as entrada,' +
+'     t.saida as saida, t.descricao_tipo_evento as descricao_tipo,' +
+'     a.nome_area as nome_area,' +
+
+'     0 as peso_vivo, 0 as perc_consumo, ' +
+'     false as femea, false as castrado, ' +
+'     false as normal, 0 as id_raca, ' +
+
+      xnada + ' as operador, 0 as alt_equi,' +
+'     0 as alt_planta, 0 as massa_seca,' +
+'     0 as alt_min_pastejo,' +
+'     0 as alt_massa_seca' +
+
+' from eventos_tb e, tipo_evento_tb t, areas_tb a' +
+' where e.data_evento >= :data_evento' +
+'   and e.data_evento < :data_evento_fim' +
+'   and e.seq_empresa = :seq_empresa' +
+'   and e.seq_area_geral = :seq_area_geral' +
+'   and (e.seq_area = :seq_area or :seq_areaTE = 99999)' +
+'   and e.seq_tipo_evento <> :seq_tipo_evento' +
+'   and e.cancelado <> true' +
+'   and t.seq_tipo_evento = e.seq_tipo_evento' +
+'   and a.seq_empresa = e.seq_empresa' +
+'   and a.seq_area_geral = e.seq_area_geral' +
+'   and a.seq_area = e.seq_area' +
+
+' union all' +
+
+' select 4 as ordem, e.data_movto_suplemento as data,' +
+'     e.seq_empresa as seq_empresa, e.seq_area_geral as seq_area_geral,' +
+'     e.seq_area as seq_area,' +
+'     t.seq_tipo_suplemento as seq_tipo,  ' + xsuplemento +
+'     as tipo, e.descricao_movto_suplemento as descricao,' +
+'     e.valor_suplemento_emreais as valor, e.qtde_suplemento as qtde, ' +
+'     false as entrada, false as saida, ' +
+'     t.descricao_tipo_suplemento as descricao_tipo, ' +
+'     a.nome_area as nome_area,' +
+
+'     0 as peso_vivo, 0 as perc_consumo, ' +
+'     false as femea, false as castrado, ' +
+'     false as normal, 0 as id_raca, ' +
+
+      xnada + ' as operador, 0 as alt_equi,' +
+'     0 as alt_planta, 0 as massa_seca,' +
+'     0 as alt_min_pastejo,' +
+'     0 as alt_massa_seca' +
+
+' from movto_suplementos_tb e, tipo_suplemento_tb t, areas_tb a' +
+' where e.data_movto_suplemento >= :data_movto_suplemento' +
+'   and e.data_movto_suplemento < :data_movto_suplemento_fim' +
+'   and e.seq_empresa = :seq_empresa2' +
+'   and e.seq_area_geral = :seq_area_geral2' +
+'   and (e.seq_area = :seq_area2 or :seq_areaTS = 99999)' +
+'   and e.cancelado <> true' +
+'   and t.seq_tipo_suplemento = e.seq_tipo_suplemento' +
+'   and a.seq_empresa = e.seq_empresa' +
+'   and a.seq_area_geral = e.seq_area_geral' +
+'   and a.seq_area = e.seq_area' +
+
+' union all' +
+
+' select 2 as ordem, e.data_movto_animais as data,' +
+'     e.seq_empresa as seq_empresa, e.seq_area_geral as seq_area_geral,' +
+'     e.seq_area as seq_area,' +
+'     t.seq_tipo_animal as seq_tipo,  ' + xanimal +
+'     as tipo, e.descricao_movto_animais as descricao,' +
+'     0 as valor, e.qtde_animais as qtde, ' +
+'     e.entrada as entrada, e.saida as saida, ' +
+'     t.descricao_tipo_animal as descricao_tipo, ' +
+'     a.nome_area as nome_area,' +
+
+'     e.peso_vivo_emkg as peso_vivo, e.perc_consumo_mspvdia as perc_consumo, ' +
+'     e.femea as femea, e.castrado as castrado, e.normal as normal, t.id_raca as id_raca, ' +
+
+      xnada + ' as operador, 0 as alt_equi,' +
+'     0 as alt_planta, 0 as massa_seca,' +
+'     0 as alt_min_pastejo,' +
+'     0 as alt_massa_seca' +
+
+' from movto_animais_tb e, tipo_animal_tb t, areas_tb a' +
+' where e.data_movto_animais >= :data_movto_animais' +
+'   and e.data_movto_animais < :data_movto_animais_fim' +
+'   and e.seq_empresa = :seq_empresa3' +
+'   and e.seq_area_geral = :seq_area_geral3' +
+'   and (e.seq_area = :seq_area3 or :seq_areaTA = 99999)' +
+'   and e.cancelado <> true' +
+'   and t.seq_tipo_animal = e.seq_tipo_animal' +
+'   and a.seq_empresa = e.seq_empresa' +
+'   and a.seq_area_geral = e.seq_area_geral' +
+'   and a.seq_area = e.seq_area' +
+
+' order by 1, 2';
+
+  qryEventosMonta.Params[0].AsString :=
+      qryEventosCiclo.FieldByName('data_evento').AsString;
+  qryEventosMonta.Params[1].AsString := vDataFimCiclo;
+  qryEventosMonta.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventosMonta.Params[3].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventosMonta.Params[4].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryEventosMonta.Params[5].AsInteger := xseq_areaT;
+  qryEventosMonta.Params[6].AsInteger :=
+        frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+
+  qryEventosMonta.Params[7].AsString :=
+      qryEventosCiclo.FieldByName('data_evento').AsString;
+  qryEventosMonta.Params[8].AsString := vDataFimCiclo;
+  qryEventosMonta.Params[9].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventosMonta.Params[10].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventosMonta.Params[11].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryEventosMonta.Params[12].AsInteger := xseq_areaT;
+
+  qryEventosMonta.Params[13].AsString :=
+      qryEventosCiclo.FieldByName('data_evento').AsString;
+  qryEventosMonta.Params[14].AsString := vDataFimCiclo;
+  qryEventosMonta.Params[15].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventosMonta.Params[16].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventosMonta.Params[17].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryEventosMonta.Params[18].AsInteger := xseq_areaT;
+
+  qryEventosMonta.Open;
+
+end;
+
+procedure TfrmControle.GanttFlatButton13Click(Sender: TObject);
+var xdata_evento_fimx, xevento, xsuplemento, xanimal, xmedicao, xnada : string;
+  i, xseq_areaT : Integer;
+
+begin
+
+  if qryEventosCiclo.RecordCount = 0 then
+    exit;
+
+  xmedicao := '''Medição''';
+  xseq_areat := 0;
+  if cbtodosPiquetes.Checked then
+    xseq_areat := 99999;
+
+  // PROCURA DATA DE FIM DO CICLO
+  vDataFimCiclo := dataFimCiclo(
+        qryAreas.FieldByName('seq_empresa').AsInteger,
+        qryAreas.FieldByName('seq_area_geral').AsInteger,
+        qryAreas.FieldByName('seq_area').AsInteger,
+        qryEventosCiclo.FieldByName('data_evento').AsString);
+
+  vDataInicioCiclo := qryEventosCiclo.FieldByName('data_evento').AsString;
+  vDataFimLinhaTempo := vDataFimCiclo;
+  if vDataFimLinhaTempo = '31/12/3000' then
+    vDataFimLinhaTempo :=
+        formatDateTime('dd/mm/yyyy', incMonth(strTOdate(vDataFimLinhaTempo), 12));
+
+  // CALCULA A MÉDIA DA ALTURA DA FORRAGEM E PESQUISA VARIÁVEIS NECESSÁRIAS
+  qryMedicoesMonta.Close;
+  qryMedicoesMonta.SQL.Text :=
+  '       select' +
+  '              a.seq_area, mc.data_medicao as data, ' + xmedicao + ' as tipo, ' +
+  '              9 as ordem, ' +
+  '              max(a.seq_empresa) as seq_empresa, max(a.seq_area_geral) as seq_area_geral,'+
+  '              max(mc.descricao_medicao) as descricao,' +
+  '              max(a.nome_area) as nome_area, max(a.tamanho_area) as tamanho_Area,' +
+  '     max(mc.operador_medicao) as operador, max(mc.altura_equipamento) as alt_equi,' +
+  '     max(mc.altura_planta) as alt_planta, max(mc.massa_seca) as massa_seca,' +
+  '     max(mc.altura_minima_pastejo) as alt_min_pastejo,' +
+  '     max(mc.altura_massa_seca) as alt_massa_seca,' +
+
+  '              avg(m.altura_ajustada) as media_planta' +
+
+  '          from medicoes_capa_tb mc,' +
+  '               medicoes_escaneamentos_tb m, areas_limites_tb al,' +
+  '               areas_tb a' +
+
+          ' where mc.data_medicao >= :data_medicao' +
+          '   and mc.data_medicao <= :data_medicao_fim' +
+          '   and mc.seq_empresa = :seq_empresa' +
+          '   and mc.seq_area_geral = :seq_area_geral' +
+
+  '           and m.seq_empresa = mc.seq_empresa    ' +
+  '           and m.seq_area_geral = mc.seq_area_geral ' +
+  '           and m.seq_medicao = mc.seq_medicao ' +
+  '           and m.altura_ajustada > 0 ' +
+  '           and m.altura_ajustada is not null ' +
+
+  '           and al.seq_empresa = m.seq_empresa' +
+  '           and al.seq_area_geral = m.seq_area_geral' +
+          '   and (al.seq_area = :seq_area or :seq_areaTM = 99999)' +
+          '   and al.ytop = m.ytop' +
+          '   and al.xleft = m.xleft' +
+
+          '   and a.seq_empresa = al.seq_empresa' +
+          '   and a.seq_area_geral = al.seq_area_geral' +
+          '   and a.seq_area = al.seq_area' +
+
+  '       group by 1, 2, 3, 4' +
+  '       order by 2, 1';
+
+  qryMedicoesMonta.Params[0].AsString :=
+      qryEventosCiclo.FieldByName('data_evento').AsString;
+  qryMedicoesMonta.Params[1].AsString := vDataFimCiclo;
+  qryMedicoesMonta.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryMedicoesMonta.Params[3].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryMedicoesMonta.Params[4].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryMedicoesMonta.Params[5].AsInteger := xseq_areaT;
+
+  qryMedicoesMonta.Open;
+
+  // VERIFICA SE EXISTE MEDIÇÃO PARA O CICLO
+  if qryMedicoesMonta.RecordCount = 0 then
+    begin
+      showmessage('não existe medição para esse ciclo, verifique se' +
+                  ' foi gerado os pontos x e y para todas as medições desse' +
+                  ' período, se não gere os pontos na tela (botão Gera Pontos Tela)');
+      exit;
+    end;
+
+  // VERIFICA SE OS PARAMETROS PARA O CÁLCULO DE ALTURA E MASSA DA PLANTA FORAM INFORMADOS
+  for I := 1 to qryMedicoesMonta.RecordCount do
+    begin
+      if (qryMedicoesMonta.FieldByName('alt_equi').AsInteger <=0) or
+         (qryMedicoesMonta.FieldByName('alt_planta').AsInteger <=0) or
+         (qryMedicoesMonta.FieldByName('alt_equi').AsInteger = null) or
+         (qryMedicoesMonta.FieldByName('alt_planta').AsInteger = null) then
+        begin
+          showmessage(
+          ' para a área: ' +
+          qryMedicoesMonta.FieldByName('nome_area').AsString +
+          ' - para a medição: ' +
+          qryMedicoesMonta.FieldByName('descricao').AsString +
+          ' - para a data: ' +
+          qryMedicoesMonta.FieldByName('data').AsString +
+                      ' - está faltando altura do equipamento ou altura da planta, ' +
+                      'vá em scanner/medições escaneamentos e gere os ' +
+                      'pontos na tela para solucionar esse problema (botão Gera Pontos Tela)');
+          abort;
+        end;
+
+      if (qryMedicoesMonta.FieldByName('massa_seca').AsCurrency <=0) or
+         (qryMedicoesMonta.FieldByName('alt_min_pastejo').AsInteger <=0) or
+         (qryMedicoesMonta.FieldByName('alt_massa_seca').AsInteger <=0) or
+         (qryMedicoesMonta.FieldByName('massa_seca').AsCurrency = null) or
+         (qryMedicoesMonta.FieldByName('alt_min_pastejo').AsInteger = null) or
+         (qryMedicoesMonta.FieldByName('alt_massa_seca').AsInteger = null) then
+        begin
+          showmessage(
+          ' para a área: ' +
+          qryMedicoesMonta.FieldByName('nome_area').AsString +
+          ' - para a medição: ' +
+          qryMedicoesMonta.FieldByName('descricao').AsString +
+          ' - para a data: ' +
+          qryMedicoesMonta.FieldByName('data').AsString +
+                      ' - está faltando peso da massa seca ou altura mínima ' +
+                      'de pastejo ou altura da massa seca, vá em ' +
+                      'scanner/medições escaneamentos e gere o gráfico de ' +
+                      'resultados para solucionar esse problema (botão Resultados)');
+          abort;
+        end;
+
+      qryMedicoesMonta.Next;
+    end;
+
+  // EXECUTA A MONTAGEM DE DADOS DA LINHA DO TEMPO
+  LeDadosLinhaTempo;
+
+  if qryEventosMonta.RecordCount > 0 then
+    begin
+      ProcessaDadosLinhaTempo;
+      if vTemErro then
+        exit;
+
+      lbCiclo.Caption := lbDescricaoEvento.Caption;
+      pnMontaLTempo.visible := false;
+
+      mkeDataLimite.Text := vDataFimCiclo;
+      exit;
+    end
+  else
+    begin
+      lbCiclo.Caption := '.....';
+      mkeDataLimite.Text := '';
+      vDataFimCiclo := '';
+
+      showmessage('não foi encontrado nenhuma medição ou movimento de evento, '+
+                  'suplemento ou animais para esse ciclo');
+      exit;
+    end;
+
+  for I := 1 to qryEventosMonta.RecordCount do
+    begin
+
+      memo1.Lines.Add(qryEventosMonta.FieldByName('ordem').AsString + '-ordem ' +
+      qryEventosMonta.FieldByName('seq_tipo').AsString + '-seq_tipo ' +
+      qryEventosMonta.FieldByName('tipo').AsString + '-tipo ' +
+      qryEventosMonta.FieldByName('data').AsString + '-data ' +
+      qryEventosMonta.FieldByName('descricao').AsString + '-descrição ');
+
+    {
+      memo1.Lines.Add(qryEventosMonta.FieldByName('ordem').AsString + '-ordem ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('seq_tipo').AsString + '-seq_tipo ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('tipo').AsString + '-tipo ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('data').AsString + '-data ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('descricao').AsString + '-descrição ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('valor').AsString + '-valor ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('qtde').AsString + '-qtde ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('entrada').AsString + '-entrada ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('saida').AsString + '-saida ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('descricao_tipo').AsString + '-descricao_tipo ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('peso_vivo').AsString + '-peso_vivo     ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('perc_consumo').AsString + '-perc_consumo     ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('femea').AsString + '-femea ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('castrado').AsString + '-castrado ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('normal').AsString + '-normal ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('id_raca').AsString + '-id_raca ');
+
+      memo1.Lines.Add(qryEventosMonta.FieldByName('operador').AsString + '-operador ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('alt_equi').AsString + '-alt_equi ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('alt_planta').AsString + '-alt_planta ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('massa_seca').AsString + '-massa_seca ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('alt_min_pastejo').AsString + '-alt_min_pastejo ');
+      memo1.Lines.Add(qryEventosMonta.FieldByName('alt_massa_seca').AsString + '-alt_massa_seca ');
+      memo1.Lines.Add('*****');
+    }
+
+      qryEventosMonta.Next;
+
+    end;
+
+  frmcontrole.Refresh;
+
+end;
+
+procedure TfrmControle.ProcessaDadosLinhaTempo;
+var
+  i: Integer;
+
+begin
+  vTemErro := true;
+
+  frmscannforr.qryGeral.Close;
+  frmscannforr.qryGeral.SQL.Text :=
+  ' delete from linha_dotempo_tb ';
+  frmscannforr.qryGeral.ExecSQL;
+
+  qryEventosMonta.First;
+  InicializaVariaveis;
+
+  vdata := strTOdateTime('01/01/1900');
+
+  for i := 1 to qryEventosMonta.RecordCount do
+    begin
+      if qryEventosMonta.FieldByName('ordem').AsInteger = 2 then
+        IncluiAnimais
+      else
+      if qryEventosMonta.FieldByName('ordem').AsInteger = 3 then
+        IncluiEventos
+      else
+      if qryEventosMonta.FieldByName('ordem').AsInteger = 4 then
+        IncluiSuplementos;
+
+      if vtemErro then
+        abort;
+
+      qryEventosMonta.Next;
+    end;
+
+  IncluiMedicoes;
+  if vtemErro then
+    exit;
+
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.IncluiSuplementos;
+var i : integer;
+
+begin
+
+  vTemErro := true;
+
+  frmscannforr.qryGeral2.Close;
+  frmscannforr.qryGeral2.SQL.Text :=
+  ' insert into linha_dotempo_tb(' +
+  '     seq_empresa, seq_area_geral, seq_area, ordem, tipo, data, descricao, ' +
+  '     descricao_tipo, valor, qtde, nome_area) ' +
+  ' values (' +
+  '     :seq_empresa, :seq_area_geral, :seq_area, :ordem, :tipo, :data, :descricao, ' +
+  '     :descricao_tipo, :valor, :qtde, :nome_area) ';
+
+  frmscannforr.qryGeral2.Params[0].AsInteger :=
+        qryEventosMonta.FieldByName('seq_empresa').AsInteger;
+  frmscannforr.qryGeral2.Params[1].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area_geral').AsInteger;
+  frmscannforr.qryGeral2.Params[2].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area').AsInteger;
+
+  frmscannforr.qryGeral2.Params[3].AsInteger :=
+        qryEventosMonta.FieldByName('ordem').AsInteger;
+  frmscannforr.qryGeral2.Params[4].AsString :=
+        qryEventosMonta.FieldByName('tipo').AsString;
+  frmscannforr.qryGeral2.Params[5].AsString :=
+        qryEventosMonta.FieldByName('data').AsString;
+  frmscannforr.qryGeral2.Params[6].AsString :=
+        qryEventosMonta.FieldByName('descricao').AsString;
+  frmscannforr.qryGeral2.Params[7].AsString :=
+        qryEventosMonta.FieldByName('descricao_tipo').AsString;
+  frmscannforr.qryGeral2.Params[8].AsCurrency :=
+        qryEventosMonta.FieldByName('valor').AsCurrency;
+  frmscannforr.qryGeral2.Params[9].AsCurrency :=
+        qryEventosMonta.FieldByName('qtde').AsCurrency;
+  frmscannforr.qryGeral2.Params[10].AsString :=
+        qryEventosMonta.FieldByName('nome_area').AsString;
+
+  try
+    frmscannforr.qryGeral2.ExecSQL;
+
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir movimento suplemento na tab linha_dotempo_tb : '+E.Message);
+      exit;
+    end;
+  end;
+
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.ProcessaSuplementos;
+var i : integer;
+
+begin
+  vTemErro := false;
+
+
+end;
+
+procedure TfrmControle.IncluiEventos;
+var i : integer;
+
+begin
+
+  vTemErro := true;
+
+  frmscannforr.qryGeral2.Close;
+  frmscannforr.qryGeral2.SQL.Text :=
+  ' insert into linha_dotempo_tb(' +
+  '     seq_empresa, seq_area_geral, seq_area, ordem, tipo, data, descricao, ' +
+  '     descricao_tipo, valor, qtde, entrada, saida, nome_area) ' +
+  ' values (' +
+  '     :seq_empresa, :seq_area_geral, :seq_area, :ordem, :tipo, :data, :descricao, ' +
+  '     :descricao_tipo, :valor, :qtde, :entrada, :saida, :nome_area) ';
+
+  frmscannforr.qryGeral2.Params[0].AsInteger :=
+        qryEventosMonta.FieldByName('seq_empresa').AsInteger;
+  frmscannforr.qryGeral2.Params[1].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area_geral').AsInteger;
+  frmscannforr.qryGeral2.Params[2].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area').AsInteger;
+
+  frmscannforr.qryGeral2.Params[3].AsInteger :=
+        qryEventosMonta.FieldByName('ordem').AsInteger;
+  frmscannforr.qryGeral2.Params[4].AsString :=
+        qryEventosMonta.FieldByName('tipo').AsString;
+  frmscannforr.qryGeral2.Params[5].AsString :=
+        qryEventosMonta.FieldByName('data').AsString;
+  frmscannforr.qryGeral2.Params[6].AsString :=
+        qryEventosMonta.FieldByName('descricao').AsString;
+  frmscannforr.qryGeral2.Params[7].AsString :=
+        qryEventosMonta.FieldByName('descricao_tipo').AsString;
+  frmscannforr.qryGeral2.Params[8].AsCurrency :=
+        qryEventosMonta.FieldByName('valor').AsCurrency;
+  frmscannforr.qryGeral2.Params[9].AsCurrency :=
+        qryEventosMonta.FieldByName('qtde').AsCurrency;
+  frmscannforr.qryGeral2.Params[10].AsBoolean :=
+        qryEventosMonta.FieldByName('entrada').AsBoolean;
+  frmscannforr.qryGeral2.Params[11].AsBoolean :=
+        qryEventosMonta.FieldByName('saida').AsBoolean;
+  frmscannforr.qryGeral2.Params[12].AsString :=
+        qryEventosMonta.FieldByName('nome_area').AsString;
+
+  try
+    frmscannforr.qryGeral2.ExecSQL;
+
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir evento na tab linha_dotempo_tb : '+E.Message);
+      exit;
+    end;
+  end;
+
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.ProcessaEventos;
+var i : integer;
+
+begin
+  vTemErro := false;
+
+
+end;
+
+procedure TfrmControle.IncluiMedicoes;
+var i : integer;
+
+begin
+
+  vTemErro := true;
+
+  qryMedicoesMonta.First;
+
+  for I := 1 to qryMedicoesMonta.RecordCount do
+    begin
+
+      frmscannforr.qryGeral2.Close;
+      frmscannforr.qryGeral2.SQL.Text :=
+      ' insert into linha_dotempo_tb(' +
+      '              seq_area, data, tipo, ordem, ' +
+      '              seq_empresa, seq_area_geral, descricao, nome_area,' +
+      '              tamanho_Area, operador, alt_equi,' +
+      '              alt_planta, massa_seca, alt_min_pastejo, alt_massa_seca,' +
+      '              media_Planta) ' +
+      ' values (' +
+      '              :seq_area, :data, :tipo, :ordem, ' +
+      '              :seq_empresa, :seq_area_geral, :descricao, :nome_area,' +
+      '              :tamanho_Area, :operador, :alt_equi,' +
+      '              :alt_planta, :massa_seca, :alt_min_pastejo, :alt_massa_seca,' +
+      '              :media_Planta) ';
+
+      frmscannforr.qryGeral2.Params[0].AsInteger :=
+            qryMedicoesMonta.FieldByName('seq_area').AsInteger;
+      frmscannforr.qryGeral2.Params[1].AsString :=
+            qryMedicoesMonta.FieldByName('data').AsString;
+      frmscannforr.qryGeral2.Params[2].AsString :=
+            qryMedicoesMonta.FieldByName('tipo').AsString;
+
+      frmscannforr.qryGeral2.Params[3].AsInteger :=
+            qryMedicoesMonta.FieldByName('ordem').AsInteger;
+      frmscannforr.qryGeral2.Params[4].AsInteger :=
+            qryMedicoesMonta.FieldByName('seq_empresa').AsInteger;
+      frmscannforr.qryGeral2.Params[5].AsInteger :=
+            qryMedicoesMonta.FieldByName('seq_area_geral').AsInteger;
+      frmscannforr.qryGeral2.Params[6].AsString :=
+            qryMedicoesMonta.FieldByName('descricao').AsString;
+      frmscannforr.qryGeral2.Params[7].AsString :=
+            qryMedicoesMonta.FieldByName('nome_area').AsString;
+      frmscannforr.qryGeral2.Params[8].AsCurrency :=
+            qryMedicoesMonta.FieldByName('tamanho_Area').AsCurrency;
+      frmscannforr.qryGeral2.Params[9].AsString :=
+            qryMedicoesMonta.FieldByName('operador').AsString;
+      frmscannforr.qryGeral2.Params[10].AsInteger :=
+            qryMedicoesMonta.FieldByName('alt_equi').AsInteger;
+      frmscannforr.qryGeral2.Params[11].AsInteger :=
+            qryMedicoesMonta.FieldByName('alt_planta').AsInteger;
+      frmscannforr.qryGeral2.Params[12].AsCurrency :=
+            qryMedicoesMonta.FieldByName('massa_seca').AsCurrency;
+      frmscannforr.qryGeral2.Params[13].AsInteger :=
+            qryMedicoesMonta.FieldByName('alt_min_pastejo').AsInteger;
+      frmscannforr.qryGeral2.Params[14].AsInteger :=
+            qryMedicoesMonta.FieldByName('alt_massa_seca').AsInteger;
+      frmscannforr.qryGeral2.Params[15].AsInteger :=
+            trunc(qryMedicoesMonta.FieldByName('media_planta').AsCurrency + 0.55);
+
+      try
+        frmscannforr.qryGeral2.ExecSQL;
+
+      except
+        on E : Exception do
+        begin
+          ShowMessage('Erro ao incluir evento na tab linha_dotempo_tb : '+E.Message);
+          abort;
+        end;
+      end;
+
+      qryMedicoesMonta.Next;
+    end;
+
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.ProcessaMedicoes;
+var i : integer;
+
+begin
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.IncluiAnimais;
+begin
+
+  vTemErro := true;
+
+  frmscannforr.qryGeral2.Close;
+  frmscannforr.qryGeral2.SQL.Text :=
+  ' insert into linha_dotempo_tb(' +
+  '     seq_empresa, seq_area_geral, seq_area, ordem, tipo, data, descricao, ' +
+  '     descricao_tipo, valor, qtde, entrada, saida, peso_vivo, perc_consumo, ' +
+  '     femea, castrado, normal, nome_area, id_raca) ' +
+  ' values (' +
+  '     :seq_empresa, :seq_area_geral, :seq_area, :ordem, :tipo, :data, :descricao, ' +
+  '     :descricao_tipo, :valor, :qtde, :entrada, :saida, :peso_vivo, :perc_consumo, ' +
+  '     :femea, :castrado, :normal, :nome_area, :id_raca) ';
+
+  frmscannforr.qryGeral2.Params[0].AsInteger :=
+        qryEventosMonta.FieldByName('seq_empresa').AsInteger;
+  frmscannforr.qryGeral2.Params[1].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area_geral').AsInteger;
+  frmscannforr.qryGeral2.Params[2].AsInteger :=
+        qryEventosMonta.FieldByName('seq_area').AsInteger;
+
+  frmscannforr.qryGeral2.Params[3].AsInteger :=
+        qryEventosMonta.FieldByName('ordem').AsInteger;
+  frmscannforr.qryGeral2.Params[4].AsString :=
+        qryEventosMonta.FieldByName('tipo').AsString;
+  frmscannforr.qryGeral2.Params[5].AsString :=
+        qryEventosMonta.FieldByName('data').AsString;
+  frmscannforr.qryGeral2.Params[6].AsString :=
+        qryEventosMonta.FieldByName('descricao').AsString;
+  frmscannforr.qryGeral2.Params[7].AsString :=
+        qryEventosMonta.FieldByName('descricao_tipo').AsString;
+  frmscannforr.qryGeral2.Params[8].AsCurrency :=
+        qryEventosMonta.FieldByName('valor').AsCurrency;
+  frmscannforr.qryGeral2.Params[9].AsCurrency :=
+        qryEventosMonta.FieldByName('qtde').AsCurrency;
+  frmscannforr.qryGeral2.Params[10].AsBoolean :=
+        qryEventosMonta.FieldByName('entrada').AsBoolean;
+  frmscannforr.qryGeral2.Params[11].AsBoolean :=
+        qryEventosMonta.FieldByName('saida').AsBoolean;
+  frmscannforr.qryGeral2.Params[12].AsCurrency :=
+        qryEventosMonta.FieldByName('peso_vivo').AsCurrency;
+  frmscannforr.qryGeral2.Params[13].AsCurrency :=
+        qryEventosMonta.FieldByName('perc_consumo').AsCurrency;
+  frmscannforr.qryGeral2.Params[14].AsBoolean :=
+        qryEventosMonta.FieldByName('femea').AsBoolean;
+  frmscannforr.qryGeral2.Params[15].AsBoolean :=
+        qryEventosMonta.FieldByName('castrado').AsBoolean;
+  frmscannforr.qryGeral2.Params[16].AsBoolean :=
+        qryEventosMonta.FieldByName('normal').AsBoolean;
+  frmscannforr.qryGeral2.Params[17].AsString :=
+        qryEventosMonta.FieldByName('nome_area').AsString;
+  frmscannforr.qryGeral2.Params[18].asinteger :=
+        qryEventosMonta.FieldByName('id_raca').asinteger;
+
+  try
+    frmscannforr.qryGeral2.ExecSQL;
+
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir movimento animais na tab linha_dotempo_tb : '+E.Message);
+      exit;
+    end;
+  end;
+
+  vTemErro := false;
+
+end;
+
+procedure TfrmControle.ProcessaAnimais;
+begin
+
+  vTemErro := false;
+
+
+end;
+
+procedure TfrmControle.GuardaAnimaisTabelaEmbrapa;
+begin
+  if vUltimaDataAnimal[vi] = ''  then
+    begin
+      vQtdeAnimalAtual[vi] :=
+            qryEventosMonta.FieldByName('qtde').AsInteger;
+      vPesoVivoInicial[vi] :=
+            qryEventosMonta.FieldByName('peso_vivo').ascurrency;
+    end
+  else
+    if (qryEventosMonta.FieldByName('seq_tipo').asinteger = vseq_tipo_animal[vi]) and
+       (qryEventosMonta.FieldByName('id_raca').asinteger = vid_raca[vi]) and
+       (qryEventosMonta.FieldByName('peso_vivo').ascurrency = vPesoVivoInicial[vi]) then
+    else
+      exit;
+
+end;
+
+procedure TfrmControle.InicializaVariaveis;
+var i : integer;
+
+begin
+
+  vSaldoCrescimento := 0;
+  vSaldoConsumo := 0;
+  vSaldoRetirada := 0;
+  vSaldoSilagem := 0;
+  vSaldoAcamamento := 0;
+  vPesoVivoGanhoTotal := 0;
+
+  for I := 1 to 100 do
+    begin
+
+      vQtdeAnimalAtual[i] := 0;
+      vPesoVivoInicial[i] := 0;
+      vPesoVivoGanho[i] := 0;
+      vPesoVivoAcumulado[i] := 0;
+      vConsumoMSdiakg[i] := 0;
+      vConsumoMSdiaAcumuladokg[i] := 0;
+      vid_raca[i] := 0;
+      vseq_tipo_animal[i] := 0;
+      vQtdeAnimalSaida[i] := 0;
+      vUltimaDataAnimal[i] := '';
+      vDescricaoTipo[i] := '';
+
+    end;
+
+end;
+
+procedure TfrmControle.ApagaLinhaTempo;
+begin
+
+  lbdata1.Visible := false;
+  lbtipo1.Visible := false;
+      mm1.Visible := false;
+     img1.Visible := false;
+  mmdias1.Visible := false;
+
+  lbdata2.Visible := false;
+  lbtipo2.Visible := false;
+      mm2.Visible := false;
+     img2.Visible := false;
+  mmdias2.Visible := false;
+
+  lbdata3.Visible := false;
+  lbtipo3.Visible := false;
+      mm3.Visible := false;
+     img3.Visible := false;
+  mmdias3.Visible := false;
+
+  lbdata4.Visible := false;
+  lbtipo4.Visible := false;
+      mm4.Visible := false;
+     img4.Visible := false;
+  mmdias4.Visible := false;
+
+  lbdata5.Visible := false;
+  lbtipo5.Visible := false;
+      mm5.Visible := false;
+     img5.Visible := false;
+  mmdias5.Visible := false;
+
+  lbdata6.Visible := false;
+  lbtipo6.Visible := false;
+      mm6.Visible := false;
+     img6.Visible := false;
+  mmdias6.Visible := false;
+
+  lbdata7.Visible := false;
+  lbtipo7.Visible := false;
+      mm7.Visible := false;
+     img7.Visible := false;
+  mmdias7.Visible := false;
+
+  lbdata8.Visible := false;
+  lbtipo8.Visible := false;
+      mm8.Visible := false;
+     img8.Visible := false;
+  mmdias8.Visible := false;
+
+  lbdata9.Visible := false;
+  lbtipo9.Visible := false;
+      mm9.Visible := false;
+     img9.Visible := false;
+  mmdias9.Visible := false;
+
+  lbdata10.Visible := false;
+  lbtipo10.Visible := false;
+      mm10.Visible := false;
+     img10.Visible := false;
+  mmdias10.Visible := false;
+
+  lbdata11.Visible := false;
+  lbtipo11.Visible := false;
+      mm11.Visible := false;
+     img11.Visible := false;
+  mmdias11.Visible := false;
+
+  lbdata12.Visible := false;
+  lbtipo12.Visible := false;
+      mm12.Visible := false;
+     img12.Visible := false;
+  mmdias12.Visible := false;
+
+  lbdata13.Visible := false;
+  lbtipo13.Visible := false;
+      mm13.Visible := false;
+     img13.Visible := false;
+  mmdias13.Visible := false;
+
+  lbdata14.Visible := false;
+  lbtipo14.Visible := false;
+      mm14.Visible := false;
+     img14.Visible := false;
+  mmdias14.Visible := false;
+
+  lbdata15.Visible := false;
+  lbtipo15.Visible := false;
+      mm15.Visible := false;
+     img15.Visible := false;
+  mmdias15.Visible := false;
+
+  lbdata16.Visible := false;
+  lbtipo16.Visible := false;
+      mm16.Visible := false;
+     img16.Visible := false;
+  mmdias16.Visible := false;
+
+  lbdata17.Visible := false;
+  lbtipo17.Visible := false;
+      mm17.Visible := false;
+     img17.Visible := false;
+  mmdias17.Visible := false;
+
+  lbdata18.Visible := false;
+  lbtipo18.Visible := false;
+      mm18.Visible := false;
+     img18.Visible := false;
+  mmdias18.Visible := false;
+
+  lbdata19.Visible := false;
+  lbtipo19.Visible := false;
+      mm19.Visible := false;
+     img19.Visible := false;
+  mmdias19.Visible := false;
+
+  lbdata20.Visible := false;
+  lbtipo20.Visible := false;
+      mm20.Visible := false;
+     img20.Visible := false;
+  mmdias20.Visible := false;
+
+  lbdata21.Visible := false;
+  lbtipo21.Visible := false;
+      mm21.Visible := false;
+     img21.Visible := false;
+  mmdias21.Visible := false;
+
+  lbdata22.Visible := false;
+  lbtipo22.Visible := false;
+      mm22.Visible := false;
+     img22.Visible := false;
+  mmdias22.Visible := false;
+
+end;
+
+procedure TfrmControle.GanttFlatButton14Click(Sender: TObject);
+begin
+
+  pnMontaLTempo.top  := trunc((screen.Height - pnMontaLTempo.Height) / 2);
+  pnMontaLTempo.left := trunc((screen.Width - pnMontaLTempo.Width) / 2);
+  pnMontaLTempo.BringToFront;
+
+  pnMontaLTempo.Visible := true;
+
+end;
+
+procedure TfrmControle.LeEventosCiclo;
+begin
+
+  qryEventosCiclo.Close;
+  qryEventosCiclo.SQL.Text :=
+' select *' +
+' from eventos_tb' +
+' where data_evento >= :data_evento' +
+'   and seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+'   and seq_tipo_evento = :seq_tipo_evento' +
+'   and cancelado <> true' +
+' order by data_evento desc';
+
+  qryEventosCiclo.Params[0].AsString := mkeDtCiclo.Text;
+  qryEventosCiclo.Params[1].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventosCiclo.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventosCiclo.Params[3].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryEventosCiclo.Params[4].AsInteger :=
+        frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+
+  qryEventosCiclo.Open;
+
+  if qryEventosCiclo.RecordCount = 0 then
+    lbDescricaoEvento.Caption := '.....'
+  else
+    lbDescricaoEvento.Caption :=
+      qryEventosCiclo.FieldByName('descricao_evento').AsString;
+
+end;
+
+procedure TfrmControle.GanttFlatButton1Click(Sender: TObject);
+begin
+
+  if qryEventos.State = dsinsert then
+    begin
+      showmessage('já está em modo de inclusão, digite os dados e clique em grava evento');
+      exit;
+    end;
+
+  qryEventos.Insert;
+  qryEventos.FieldByName('data_evento').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryEVentos.FieldByName('valor_evento').AsCurrency := 0;
+  qryEventos.FieldByName('qtde_evento').AsCurrency := 0;
+
+  qryTipo_eventocb.First;
+  dblTipoEvento.KeyValue:='';
+
+  dbeDescricao_evento.SetFocus;
+
+end;
+
+procedure TfrmControle.GanttFlatButton2Click(Sender: TObject);
+var i : integer;
+    xdataConfere : tdate;
+
+begin
+
+  if qryEventos.State <> dsinsert then
+    begin
+      showmessage('é permitido somente inclusão de eventos');
+      qryEventos.CancelUpdates;
+      exit;
+    end;
+
+  if ( (length(dbevalor.Text) = 0) or (strTocurr(dbevalor.Text) <= 0) ) and
+     (qryTipo_eventocb.FieldByName('exige_valor').AsBoolean) then
+    begin
+      showmessage('informe o valor gasto no evento');
+      dbeValor.SetFocus;
+      exit;
+    end;
+
+  if ( (length(dbeqtde.Text) = 0) or (strTocurr(dbeqtde.Text) <= 0) ) and
+     (qryTipo_eventocb.FieldByName('exige_qtde').AsBoolean) then
+    begin
+      showmessage('informe a quantidade gasta no evento');
+      dbeQtde.SetFocus;
+      exit;
+    end;
+
+  try
+    xdataConfere := strTOdate(dbedata_evento.Text);
+    dbeData_evento.text := formatDateTime('dd/mm/yyy', xdataConfere);
+  except
+    showmessage('data inválida');
+    dbedata_evento.SetFocus;
+    exit;
+  end;
+
+  // PROCURA ÚLTIMA DATA DE CICLO CADASTRADO
+  vDataInicioCiclo := DataInicioCiclo(
+        qryAreas.FieldByName('seq_empresa').AsInteger,
+        qryAreas.FieldByName('seq_area_geral').AsInteger,
+        qryAreas.FieldByName('seq_area').AsInteger,
+        '31/12/3000');
+
+  if (copy(vDataInicioCiclo, 1, 5) = '!@#$%') and
+     (qryTipo_Eventocb.fieldbyname('seq_tipo_evento').asinteger <>
+       frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger) then
+    begin
+      showmessage('falta evento de início de ciclo');
+      dbeData_evento.SetFocus;
+      exit;
+    end
+  else
+  if (copy(vDataInicioCiclo, 1, 5) <> '!@#$%') and
+     (qryTipo_Eventocb.fieldbyname('seq_tipo_evento').asinteger =
+       frmscannforr.qryPadrao_sistema.
+            FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger) and
+     (strTOdate(vDataInicioCiclo) = strTOdate(dbeData_evento.Text)) then
+    begin
+      showmessage('já existe um evento de início de ciclo para essa data');
+      dbeData_evento.SetFocus;
+      exit;
+    end
+  else
+  if (copy(vDataInicioCiclo, 1, 5) <> '!@#$%') and
+     (strTOdateTime(vDataInicioCiclo) > strTOdateTime(dbeData_evento.Text)) then
+    begin
+      showmessage('o ciclo já está fechado para essa data de evento');
+      dbeData_evento.SetFocus;
+      exit;
+    end;
+
+  qryEventos.FieldByName('seq_empresa').AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryEventos.FieldByName('seq_area_geral').AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryEventos.FieldByName('seq_area').AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryEventos.FieldByName('data_inclusao').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryEventos.FieldByName('cancelado').AsBoolean := false;
+
+  try
+    qryEventos.ApplyUpdates;
+    qryEventos.CommitUpdates;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir evento : '+E.Message);
+      qryEventos.CancelUpdates;
+      exit;
+    end;
+  end;
+
+  if qryeventos.FieldByName('seq_tipo_evento').AsInteger =
+     frmscannforr.qrypadrao_sistema.
+        FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger then
+    begin
+      frmscannforr.qryGeral.Close;
+      frmscannforr.qryGeral.SQL.Text :=
+    ' select *' +
+    ' from areas_tb' +
+    ' where seq_empresa = :seq_empresa' +
+    '   and seq_area_geral = :seq_area_geral' +
+    '   and seq_area <> :seq_area';
+
+      frmscannforr.qryGeral.Params[0].AsInteger :=
+            qryAreas.FieldByName('seq_empresa').AsInteger;
+      frmscannforr.qryGeral.Params[1].AsInteger :=
+            qryAreas.FieldByName('seq_area_geral').AsInteger;
+      frmscannforr.qryGeral.Params[2].AsInteger :=
+            qryAreas.FieldByName('seq_area').AsInteger;
+
+      frmscannforr.qryGeral.Open;
+      if frmscannforr.qryGeral.RecordCount > 0 then
+        begin
+
+          for I := 1 to frmscannforr.qryGeral.RecordCount do
+            begin
+
+              frmscannforr.qryGeral2.Close;
+              frmscannforr.qryGeral2.SQL.Text :=
+    ' insert into eventos_tb(' +
+    '     seq_empresa, seq_area_geral, seq_area, seq_tipo_evento, descricao_evento,' +
+    '     valor_evento, data_evento, qtde_evento, data_inclusao, cancelado)' +
+    ' values (' +
+    '     :seq_empresa, :seq_area_geral, :seq_area, :seq_tipo_evento, :descricao_evento,' +
+    '     :valor_evento, :data_evento, :qtde_evento, :data_inclusao, :cancelado)';
+
+              frmscannforr.qryGeral2.Params[0].AsInteger :=
+                    qryAreas.FieldByName('seq_empresa').AsInteger;
+              frmscannforr.qryGeral2.Params[1].AsInteger :=
+                    qryAreas.FieldByName('seq_area_geral').AsInteger;
+              frmscannforr.qryGeral2.Params[2].AsInteger :=
+                    frmscannforr.qryGeral.FieldByName('seq_area').AsInteger;
+
+              frmscannforr.qryGeral2.Params[3].AsInteger :=
+                    frmscannforr.qrypadrao_sistema.
+                    FieldByName('seq_tipo_evento_inicio_ciclo').AsInteger;
+              frmscannforr.qryGeral2.Params[4].AsString :=
+                    dbeDescricao_evento.Text;
+              frmscannforr.qryGeral2.Params[5].AsInteger := 0;
+              frmscannforr.qryGeral2.Params[6].AsString :=
+                    dbeData_evento.Text;
+              frmscannforr.qryGeral2.Params[7].AsInteger := 0;
+              frmscannforr.qryGeral2.Params[8].AsString :=
+                    formatDateTime('dd/mm/yyyy', now);
+              frmscannforr.qryGeral2.Params[9].AsBoolean := false;
+
+              frmscannforr.qryGeral2.ExecSQL;
+              frmscannforr.qryGeral.Next;
+            end;
+
+        end;
+    end;
+
+  showmessage('Evento incluido!');
+
+end;
+
+procedure TfrmControle.GanttFlatButton3Click(Sender: TObject);
+begin
+
+  qryEventos.CancelUpdates;
+
+end;
+
+procedure TfrmControle.GanttFlatButton4Click(Sender: TObject);
+begin
+
+  pesquisaMovtoSuplemento;
+
+end;
+
+procedure TfrmControle.pesquisaMovtoSuplemento;
+var xfiltroData, xorderby : string;
+
+begin
+
+  if length(mkeDtSuplemento.Text) > 0 then
+    xfiltroData := ' and data_movto_suplemento >= :dt'
+  else
+  if length(mkeDtInclusaoSup.Text) > 0 then
+    xfiltroData := ' and data_inclusao >= :dt'
+  else
+    begin
+      showmessage('informe uma data para pesquisa');
+      mkeDtSuplemento.SetFocus;
+      exit;
+    end;
+
+  if vsortData then
+    if vcresc then
+      xorderby := ' order by data_movto_suplemento asc, seq_movto_suplementos'
+    else
+      xorderby := ' order by data_movto_suplemento desc, seq_movto_suplementos'
+  else
+  if vsortInclusao then
+    if vcresc then
+      xorderby := ' order by data_inclusao asc, seq_movto_suplementos'
+    else
+      xorderby := ' order by data_inclusao desc, seq_movto_suplementos'
+  else
+  if vsortDescricao then
+    if vcresc then
+      xorderby := ' order by descricao_movto_suplemento asc, seq_movto_suplementos'
+    else
+      xorderby := ' order by descricao_movto_suplemento desc, seq_movto_suplementos'
+  else
+  if vinativo then
+    begin
+      xorderby := ' order by data_movto_suplemento asc, seq_movto_suplementos';
+      xfiltroData := xfiltroData + ' and cancelado = :cancelado ';
+    end
+  else
+    xorderby := ' order by data_movto_suplemento asc, seq_movto_suplementos';
+
+  qryMovto_Suplementos.Close;
+  qryMovto_Suplementos.SQL.Clear;
+  qryMovto_Suplementos.SQL.Text :=
+
+' Select *' +
+' from movto_suplementos_tb' +
+' where seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+xfiltroData +
+xorderby;
+
+  qryMovto_Suplementos.Params[0].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryMovto_Suplementos.Params[1].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryMovto_Suplementos.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+
+  if length(mkeDtSuplemento.Text) > 0 then
+    qryMovto_Suplementos.Params[3].AsString := mkeDtSuplemento.Text
+  else
+    qryMovto_Suplementos.Params[3].AsString := mkeDtInclusaoSup.Text;
+
+  if vinativo then
+    if vcresc then
+      qryMovto_Suplementos.Params[4].AsBoolean := true
+    else
+      qryMovto_Suplementos.Params[4].AsBoolean := false;
+
+  qryMovto_Suplementos.Open;
+
+end;
+
+procedure TfrmControle.qryTipo_AnimalAfterDelete(DataSet: TDataSet);
+begin
+
+  qryTipo_animal.ApplyUpdates;
+  qryTipo_animal.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qryTipo_AnimalAfterEdit(DataSet: TDataSet);
+begin
+
+  if qryTipo_animal.FieldByName('tipo_animal_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de animal é padrão do sistema, não pode ser alterado nem apagado');
+      qryTipo_animal.CancelUpdates;
+    end;
+
+end;
+
+procedure TfrmControle.qryTipo_AnimalAfterPost(DataSet: TDataSet);
+begin
+
+  qryTipo_animal.ApplyUpdates;
+  qryTipo_animal.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qryTipo_AnimalBeforeDelete(DataSet: TDataSet);
+begin
+
+  if qryTipo_animal.FieldByName('tipo_animal_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de animal é padrão do sistema, não pode ser alterado nem apagado');
+      abort;
+    end;
+
+end;
+
+procedure TfrmControle.qryTipo_AnimalBeforePost(DataSet: TDataSet);
+begin
+
+  if length(dbeDescricaota.Text) = 0 then
+    begin
+      showmessage('informe a descrição do tipo de animal');
+      dbeDescricaota.SetFocus;
+      abort;
+    end;
+
+  if length(dbepesovivo.Text) = 0 then
+    begin
+      showmessage('informe o peso vivo do tipo de animal, por cabeça');
+      dbepesovivo.SetFocus;
+      abort;
+    end;
+
+  if strToCurr(dbepesovivo.Text) <= 0 then
+    begin
+      showmessage('informe o peso vivo do tipo de animal, por cabeça');
+      dbepesovivo.SetFocus;
+      abort;
+    end;
+
+  if length(dbePercConsumo.Text) = 0 then
+    begin
+      showmessage('informe o percentual de consumo do tipo de animal, por cabeça');
+      dbePercConsumo.SetFocus;
+      abort;
+    end;
+
+  if strToCurr(dbePercConsumo.Text) <= 0 then
+    begin
+      showmessage('informe o percentual de consumo do tipo de animal, por cabeça');
+      dbePercConsumo.SetFocus;
+      abort;
+    end;
+
+end;
+
+procedure TfrmControle.qrytipo_EventoAfterDelete(DataSet: TDataSet);
+begin
+
+  qryTipo_Evento.ApplyUpdates;
+  qryTipo_Evento.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qrytipo_EventoAfterEdit(DataSet: TDataSet);
+begin
+
+  if qryTipo_evento.FieldByName('tipo_evento_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de evento é padrão do sistema, não pode ser alterado nem apagado');
+      qryTipo_evento.CancelUpdates;
+    end;
+
+end;
+
+procedure TfrmControle.qrytipo_EventoAfterPost(DataSet: TDataSet);
+begin
+
+  qryTipo_evento.ApplyUpdates;
+  qryTipo_evento.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qrytipo_EventoBeforeDelete(DataSet: TDataSet);
+begin
+
+  if qryTipo_evento.FieldByName('tipo_evento_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de evento é padrão do sistema, não pode ser alterado nem apagado');
+      abort;
+    end;
+
+end;
+
+procedure TfrmControle.qrytipo_EventoBeforePost(DataSet: TDataSet);
+begin
+
+  if length(dbeDescricao.Text) = 0 then
+    begin
+      showmessage('informe a descrição do tipo de evento');
+      dbeDescricao.SetFocus;
+      abort;
+    end;
+
+  if length(dbcunidadee.Text) = 0 then
+    begin
+      showmessage('informe a unidade do tipo de evento');
+      abort;
+    end;
+
+  if dcbEntrada.Checked and dcbSaida.Checked then
+    begin
+      showmessage('informe entrada ou saída para o tipo de evento');
+      abort;
+    end;
+
+  if not dcbEntrada.Checked and not dcbSaida.Checked then
+    begin
+      showmessage('informe entrada ou saída para o tipo de evento');
+      abort;
+    end;
+
+  if dcbentrada.Checked then
+    qryTipo_evento.FieldByName('entrada').AsBoolean := true
+  else
+    qryTipo_evento.FieldByName('entrada').AsBoolean := false;
+
+  if dcbsaida.Checked then
+    qryTipo_evento.FieldByName('saida').AsBoolean := true
+  else
+    qryTipo_evento.FieldByName('saida').AsBoolean := false;
+
+end;
+
+procedure TfrmControle.qryTipo_SuplementoAfterDelete(DataSet: TDataSet);
+begin
+
+  qryTipo_suplemento.ApplyUpdates;
+  qryTipo_suplemento.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qryTipo_SuplementoAfterEdit(DataSet: TDataSet);
+begin
+
+  if qryTipo_suplemento.FieldByName('tipo_suplemento_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de suplemento é padrão do sistema, não pode ser alterado nem apagado');
+      qryTipo_suplemento.CancelUpdates;
+    end;
+
+end;
+
+procedure TfrmControle.qryTipo_SuplementoAfterPost(DataSet: TDataSet);
+begin
+
+  qryTipo_suplemento.ApplyUpdates;
+  qryTipo_suplemento.CommitUpdates;
+
+end;
+
+procedure TfrmControle.qryTipo_SuplementoBeforeDelete(DataSet: TDataSet);
+begin
+
+  if qryTipo_suplemento.FieldByName('tipo_suplemento_padrao').AsBoolean then
+    begin
+      showmessage('Esse tipo de suplemento é padrão do sistema, não pode ser alterado nem apagado');
+      abort;
+    end;
+
+end;
+
+procedure TfrmControle.qryTipo_SuplementoBeforePost(DataSet: TDataSet);
+begin
+
+  if length(dbeDescricaots.Text) = 0 then
+    begin
+      showmessage('informe a descrição do tipo de suplemento');
+      dbeDescricaots.SetFocus;
+      abort;
+    end;
+
+  if length(dbcunidades.Text) = 0 then
+    begin
+      showmessage('informe a unidade do tipo de suplemento');
+      abort;
+    end;
+
+  if (length(dbeindicesuplemento.Text) = 0) or
+     (strTOcurr(dbeindicesuplemento.Text) <= 0) then
+    begin
+      showmessage('Informe o índice do tipo de suplemento');
+      dbeindicesuplemento.SetFocus;
+      abort;
+    end;
+
+end;
+
+procedure TfrmControle.GanttFlatButton5Click(Sender: TObject);
+begin
+
+  if qryMovto_Suplementos.State = dsinsert then
+    begin
+      showmessage('já está em modo de inclusão, digite os dados e clique em grava movto');
+      exit;
+    end;
+
+  qryMovto_Suplementos.Insert;
+  qryMovto_Suplementos.FieldByName('data_movto_suplemento').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryMovto_Suplementos.FieldByName('valor_suplemento_emreais').AsCurrency := 0;
+  qryMovto_Suplementos.FieldByName('qtde_suplemento').AsCurrency := 0;
+
+  qryTipo_suplementocb.First;
+  dblTipoSuplemento.KeyValue:='';
+
+  dbeDescricao_movto_suplemento.SetFocus;
+
+end;
+
+procedure TfrmControle.GanttFlatButton6Click(Sender: TObject);
+var xdataConfere : tdatetime;
+
+begin
+
+  if qryMovto_suplementos.State <> dsinsert then
+    begin
+      showmessage('é permitido somente inclusão de movimentos de suplemento');
+      qryMovto_suplementos.CancelUpdates;
+      exit;
+    end;
+
+  if ( (length(dbevalorSup.Text) = 0) or (strTocurr(dbevalorSup.Text) <= 0) ) then
+    begin
+      showmessage('informe o valor do suprimento gasto no movimento');
+      dbeValorSup.SetFocus;
+      exit;
+    end;
+
+  if ( (length(dbeqtdeSup.Text) = 0) or (strTocurr(dbeqtdeSup.Text) <= 0) ) then
+    begin
+      showmessage('informe a quantidade de suprimento gasta no movimento');
+      dbeQtdeSup.SetFocus;
+      exit;
+    end;
+
+  try
+    xdataConfere := strTOdateTime(dbedataSup.Text);
+  except
+    showmessage('data inválida');
+    dbedataSup.SetFocus;
+    exit;
+  end;
+
+  // PROCURA DATA DE FIM DO CICLO
+  vDataFimCiclo := dataFimCiclo(
+        qryAreas.FieldByName('seq_empresa').AsInteger,
+        qryAreas.FieldByName('seq_area_geral').AsInteger,
+        qryAreas.FieldByName('seq_area').AsInteger,
+        dbeDataSup.Text);
+  if vDataFimCiclo <> '31/12/3000' then
+    begin
+      showmessage('o ciclo já está fechado para essa data de movimento');
+      dbeDataSup.SetFocus;
+      exit;
+    end;
+
+  qryMovto_suplementos.FieldByName('seq_empresa').AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryMovto_suplementos.FieldByName('seq_area_geral').AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryMovto_suplementos.FieldByName('seq_area').AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+  qryMovto_suplementos.FieldByName('data_inclusao').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryMovto_suplementos.FieldByName('cancelado').AsBoolean := false;
+
+  try
+    qryMovto_suplementos.ApplyUpdates;
+    qryMovto_suplementos.CommitUpdates;
+  except
+    on E : Exception do
+    begin
+      ShowMessage('Erro ao incluir movimento suplemento : '+E.Message);
+      qryMovto_suplementos.CancelUpdates;
+      exit;
+    end;
+  end;
+
+  showmessage('Movimento incluido!');
+
+end;
+
+procedure TfrmControle.GanttFlatButton7Click(Sender: TObject);
+begin
+
+  qryMovto_suplementos.CancelUpdates;
+
+end;
+
+procedure TfrmControle.GanttFlatButton8Click(Sender: TObject);
+begin
+
+  pesquisaMovtoAnimais;
+
+end;
+
+procedure TfrmControle.GanttFlatButton9Click(Sender: TObject);
+begin
+
+  if qryMovto_animais.State = dsinsert then
+    begin
+      showmessage('já está em modo de inclusão, digite os dados e clique em grava movto');
+      exit;
+    end;
+
+  qryMovto_animais.Insert;
+  qryMovto_animais.FieldByName('data_movto_animais').AsString := formatDateTime('dd/mm/yyyy', now);
+  qryMovto_animais.FieldByName('peso_vivo_emKg').AsCurrency := 0;
+  qryMovto_animais.FieldByName('perc_consumo_mspvdia').AsCurrency := 0;
+  qryMovto_animais.FieldByName('qtde_animais').AsCurrency := 0;
+
+  qryTipo_animalcb.First;
+  dblTipoAnimal.KeyValue:='';
+
+  dbeDescricao_movto_animais.SetFocus;
+
+end;
+
+procedure TfrmControle.Image2Click(Sender: TObject);
+begin
+
+  pnMontaLTempo.Visible := false;
+
+end;
+
+procedure TfrmControle.pesquisaMovtoAnimais;
+var xfiltroData, xorderby : string;
+
+begin
+
+  xfiltrodata := '';
+  xorderby := '';
+
+  if length(mkeDtAnimais.Text) > 0 then
+    xfiltroData := ' and data_movto_animais >= :dt'
+  else
+  if length(mkeDtInclusaoAni.Text) > 0 then
+    xfiltroData := ' and data_inclusao >= :dt'
+  else
+    begin
+      showmessage('informe uma data para pesquisa');
+      mkeDtanimais.SetFocus;
+      exit;
+    end;
+
+  if vsortData then
+    if vcresc then
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais'
+    else
+      xorderby := ' order by data_movto_animais desc, seq_movto_animais'
+  else
+  if vsortInclusao then
+    if vcresc then
+      xorderby := ' order by data_inclusao asc, seq_movto_animais'
+    else
+      xorderby := ' order by data_inclusao desc, seq_movto_animais'
+  else
+  if vsortDescricao then
+    if vcresc then
+      xorderby := ' order by descricao_movto_animais asc, seq_movto_animais'
+    else
+      xorderby := ' order by descricao_movto_animais desc, seq_movto_animais'
+  else
+  if vinativo then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and cancelado = :cancelado ';
+    end
+  else
+  if ventrada then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and entrada = :entrada ';
+    end
+  else
+  if vsaida then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and saida = :saida ';
+    end
+  else
+  if vfemea then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and femea = :femea ';
+    end
+  else
+  if vcastrado then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and castrado = :castrado ';
+    end
+  else
+  if vnormal then
+    begin
+      xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+      xfiltroData := xfiltroData + ' and normal = :normal ';
+    end
+  else
+    xorderby := ' order by data_movto_animais asc, seq_movto_animais';
+
+  qryMovto_animais.Close;
+  qryMovto_animais.SQL.Clear;
+  qryMovto_animais.SQL.Text :=
+
+' Select *' +
+' from movto_animais_tb' +
+' where seq_empresa = :seq_empresa' +
+'   and seq_area_geral = :seq_area_geral' +
+'   and seq_area = :seq_area' +
+xfiltroData +
+xorderby;
+
+  qryMovto_animais.Params[0].AsInteger :=
+        qryAreas.FieldByName('seq_empresa').AsInteger;
+  qryMovto_animais.Params[1].AsInteger :=
+        qryAreas.FieldByName('seq_area_geral').AsInteger;
+  qryMovto_animais.Params[2].AsInteger :=
+        qryAreas.FieldByName('seq_area').AsInteger;
+
+  if length(mkeDtanimais.Text) > 0 then
+    qryMovto_animais.Params[3].AsString := mkeDtanimais.Text
+  else
+    qryMovto_animais.Params[3].AsString := mkeDtInclusaoAni.Text;
+
+  if vinativo  or
+     ventrada  or
+     vsaida    or
+     vfemea    or
+     vcastrado or
+     vnormal   then
+    if vcresc then
+      qryMovto_animais.Params[4].AsBoolean := true
+    else
+      qryMovto_animais.Params[4].AsBoolean := false;
+
+  qryMovto_animais.Open;
+
+end;
+
+procedure TfrmControle.MoveNomes;
+begin
+
+  if xSelectedIndex = 0 then
+    begin
+      lbPiquete.Caption := 'piquete: ' + qryAreas.FieldByName('nome_area').AsString;
+      lbAreaGeral.Caption := 'área: ' + qryAreas.FieldByName('nome_area_geral').AsString;
+      lbLocal.Caption := 'local: ' + qryAreas.FieldByName('nome_empresa').AsString;
+    end;
+
+  if xSelectedIndex = 1 then
+    begin
+      lbPiquete.Caption := 'piquete: ' + qryAreas.FieldByName('nome_area').AsString;
+      lbAreaGeral.Caption := 'área: ' + qryAreas.FieldByName('nome_area_geral').AsString;
+      lbLocal.Caption := 'local: ' + qryAreas.FieldByName('nome_empresa').AsString;
+    end;
+
+  if xSelectedIndex = 2 then
+    begin
+      lbPiquete.Caption := 'piquete: ' + qryAreas.FieldByName('nome_area').AsString;
+      lbAreaGeral.Caption := 'área: ' + qryAreas.FieldByName('nome_area_geral').AsString;
+      lbLocal.Caption := 'local: ' + qryAreas.FieldByName('nome_empresa').AsString;
+    end;
+
+end;
+
+procedure TfrmControle.pcControleChange(Sender: TObject);
+begin
+
+  if (frmcontrole.pcControle.TabIndex = 3) or
+     (frmcontrole.pcControle.TabIndex = 4) then
+    begin
+      FrmControle.top  := 0;
+      FrmControle.left := 0;
+      frmControle.Height := screen.Height;
+      frmControle.Width  := screen.Width;
+    end
+  else
+    begin
+      frmControle.Height := 532;
+      frmControle.Width  := 903;
+
+      FrmControle.top  := trunc((screen.Height - FrmControle.Height) / 2);
+      FrmControle.left := trunc((screen.Width - FrmControle.Width) / 2);
+
+      pnMontaLTempo.Visible := false;
+    end;
+
+  frmControle.Refresh;
+
+end;
+
+procedure TfrmControle.pcSuperiorChange(Sender: TObject);
+begin
+
+  pnMontaLTempo.Visible := false;
+
+  if (frmcontrole.pcSuperior.TabIndex = 0) or
+     (frmcontrole.pcSuperior.TabIndex = 2) or
+     (frmcontrole.pcSuperior.TabIndex = 3) or
+     (frmcontrole.pcSuperior.TabIndex = 4) then
+    begin
+      frmControle.Height := 532;
+      frmControle.Width  := 903;
+
+      FrmControle.top  := trunc((screen.Height - FrmControle.Height) / 2);
+      FrmControle.left := trunc((screen.Width - FrmControle.Width) / 2);
+    end
+  else
+  if (frmcontrole.pcControle.TabIndex = 3) or
+     (frmcontrole.pcControle.TabIndex = 4) then
+    begin
+      FrmControle.top  := 0;
+      FrmControle.left := 0;
+      frmControle.Height := screen.Height;
+      frmControle.Width  := screen.Width;
+    end;
+
+  if (frmcontrole.pcSuperior.TabIndex = 2) then
+    begin
+      qryTipo_evento.Close;
+      qryTipo_evento.Open;
+
+      frmscannforr.qryUnidades2.Close;
+      frmscannforr.qryUnidades2.Open;
+    end;
+
+  if (frmcontrole.pcSuperior.TabIndex = 3) then
+    begin
+      qryTipo_suplemento.Close;
+      qryTipo_suplemento.Open;
+
+      frmscannforr.qryUnidades2.Close;
+      frmscannforr.qryUnidades2.Open;
+    end;
+
+  if (frmcontrole.pcSuperior.TabIndex = 4) then
+    begin
+      qryTipo_animal.Close;
+      qryTipo_animal.Open;
+    end;
+
+  frmControle.Refresh;
+
+end;
+
+end.
